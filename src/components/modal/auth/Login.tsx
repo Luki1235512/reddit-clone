@@ -2,6 +2,9 @@ import React, {useState} from "react";
 import {Button, Flex, Input, Text} from "@chakra-ui/react";
 import {useSetRecoilState} from "recoil";
 import {authModalState} from "@/src/atoms/authModalAtoms";
+import {useSignInWithEmailAndPassword} from "react-firebase-hooks/auth";
+import {auth} from "@/src/firebase/clientApp";
+import {FIREBASE_ERRORS} from "@/src/firebase/errors";
 
 type LoginProps = {
 
@@ -13,9 +16,13 @@ const Login: React.FC<LoginProps> = () => {
         email: "",
         password: "",
     });
+    const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
 
     // FIREBASE LOGIC
-    const onSubmit = () => {};
+    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        signInWithEmailAndPassword(loginForm.email, loginForm.password);
+    };
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         // UPDATE FORM STATE
@@ -71,7 +78,10 @@ const Login: React.FC<LoginProps> = () => {
                 }}
                 bg="gray.50"
             />
-            <Button width="100%" height="36px" mt={2} mb={2} type="submit">
+            <Text textAlign="center" color="red" fontSize="10pt">
+                {FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
+            </Text>
+            <Button width="100%" height="36px" mt={2} mb={2} type="submit" isLoading={loading}>
                 Log In
             </Button>
             <Flex fontSize="9pt" justifyContent="center">
