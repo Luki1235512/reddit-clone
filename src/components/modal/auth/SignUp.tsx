@@ -1,10 +1,10 @@
-import React, {useState} from "react";
-import {useSetRecoilState} from "recoil";
-import {authModalState} from "@/src/atoms/authModalAtoms";
-import {Button, Flex, Input, Text} from "@chakra-ui/react";
-import {useCreateUserWithEmailAndPassword} from "react-firebase-hooks/auth";
-import {auth} from "@/src/firebase/clientApp";
-import {FIREBASE_ERRORS} from "@/src/firebase/errors";
+import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "@/src/atoms/authModalAtoms";
+import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/src/firebase/clientApp";
+import { FIREBASE_ERRORS } from "@/src/firebase/errors";
 
 const SignUp: React.FC = () => {
     const setAuthModalState = useSetRecoilState(authModalState);

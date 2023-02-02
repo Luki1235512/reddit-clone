@@ -2,7 +2,7 @@ import { Flex, Icon } from "@chakra-ui/react";
 import React from "react";
 import { BsArrowUpRightCircle, BsChatDots } from "react-icons/bs";
 import { IoFilterCircleOutline, IoNotificationsCircleOutline, IoNotificationsOutline, IoVideocamOutline } from "react-icons/io5";
-import {GrAdd} from "react-icons/gr";
+import { GrAdd } from "react-icons/gr";
 
 const Icons: React.FC = () => {
     return (

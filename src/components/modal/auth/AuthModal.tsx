@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import AuthInputs from "./AuthInputs";
 import OAuthButtons from "@/src/components/modal/auth/OAuthButtons";
 import {
@@ -9,10 +9,10 @@ import {
     ModalHeader,
     ModalOverlay, Text,
 } from "@chakra-ui/react";
-import {useRecoilState} from "recoil";
-import {authModalState} from "@/src/atoms/authModalAtoms";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "@/src/firebase/clientApp";
+import { useRecoilState } from "recoil";
+import { authModalState } from "@/src/atoms/authModalAtoms";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/src/firebase/clientApp";
 import ResetPassword from "@/src/components/modal/auth/ResetPassword";
 
 const AuthModal: React.FC = () => {
