@@ -2,7 +2,7 @@ import { Box, Button, Divider, Modal, ModalBody, ModalCloseButton, ModalContent,
 import React, { useState } from "react";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 import { firestore, auth } from "@/src/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -49,19 +49,26 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({open, handle
         try {
             const communityDocRef = doc(firestore, "communities", communityName);
 
-            // CHECK IF COMMUNITY EXISTS IN DB
-            const communityDoc = await getDoc(communityDocRef);
+            await runTransaction(firestore, async (transaction) => {
+                // CHECK IF COMMUNITY EXISTS IN DB
+                const communityDoc = await transaction.get(communityDocRef);
+                if (communityDoc.exists()) {
+                    throw new Error(`Sorry, r/${communityName} is taken. Try another.`);
+                }
 
-            if (communityDoc.exists()) {
-                throw new Error(`Sorry, r/${communityName} is taken. Try another.`);
-            }
+                // CREATE COMMUNNITY
+                transaction.set(communityDocRef, {
+                    creatorId: user?.uid,
+                    createdAt: serverTimestamp(),
+                    numberOfMembers: 1,
+                    privacyType: communityType
+                });
 
-            // CREATE COMMUNNITY
-            await setDoc(communityDocRef, {
-                creatorId: user?.uid,
-                createdAt: serverTimestamp(),
-                numberOfMembers: 1,
-                privacyType: communityType
+                // CREATE COMMUNITY SNIPPET ON USER
+                transaction.set(doc(firestore, `users/${user?.uid}/communitySnippets`, communityName), {
+                    communityId: communityName,
+                    isModerator: true,
+                });
             });
         }
         catch (error: any) {
