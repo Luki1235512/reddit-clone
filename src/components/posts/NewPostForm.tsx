@@ -5,6 +5,7 @@ import { BiPoll } from "react-icons/bi"
 import TabItem from "./TabItems";
 import { useState } from "react";
 import TextInputs from "./postForm/TextInputs";
+import ImageUpload from "./postForm/ImageUpload";
 
 type NewPostFormProps = {
 
@@ -16,7 +17,7 @@ const formTabs: TabItem[] = [
         icon: IoDocumentText
     },
     {
-        title: "Image & Video",
+        title: "Images & Video",
         icon: IoImageOutline
     },
     {
@@ -49,7 +50,19 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
 
     const handleCreatePost = async () => {};
 
-    const onSelectImage = () => {};
+    const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const reader = new FileReader();
+
+        if (event.target.files?.[0]) {
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        reader.onload = (readerEvent) => {
+            if (readerEvent.target?.result) {
+                setSelectedFile(readerEvent.target.result as string);
+            }
+        }
+    };
 
     const onTextChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {target: {name, value}} = event;
@@ -64,6 +77,7 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
             <Flex width="100%">
                 {formTabs.map(item => (
                     <TabItem 
+                        key={item.title}
                         item={item} 
                         selected={item.title === selectedTab} 
                         setSelectedTab={setSelectedTab} 
@@ -79,6 +93,12 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
                         loading={loading}
                     />
                 )}
+                {selectedTab === "Images & Video" && <ImageUpload 
+                    selectedFile={selectedFile}
+                    onSelectImage={onSelectImage}
+                    setSelectedTab={setSelectedTab}
+                    setSelectedFile={setSelectedFile}
+                />}
             </Flex>
         </Flex>
     );
