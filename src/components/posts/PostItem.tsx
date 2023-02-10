@@ -1,9 +1,10 @@
 import { Post } from "@/src/atoms/postsAtom";
-import { Flex, Icon, Image, Stack, Text } from "@chakra-ui/react";
+import { Flex, Icon, Image, Skeleton, Stack, Text } from "@chakra-ui/react";
 import moment from "moment";
 import { BsChat } from "react-icons/bs";
 import { IoArrowDownCircleOutline, IoArrowDownCircleSharp, IoArrowRedoOutline, IoArrowUpCircleOutline, IoArrowUpCircleSharp, IoBookmarkOutline } from "react-icons/io5";
 import { AiOutlineDelete } from "react-icons/ai";
+import { useState } from "react";
 
 
 type PostItemProps = {
@@ -23,6 +24,8 @@ const PostItem: React.FC<PostItemProps> = ({
     onDeletePost, 
     onSelectPost
 }) => {
+    const [loadingImage, setLoadingImage] = useState(true);
+
     return (
         <Flex 
             border="1px solid" 
@@ -31,7 +34,7 @@ const PostItem: React.FC<PostItemProps> = ({
             borderRadius={4}
             _hover={{borderColor: "gray.500"}}
             cursor="pointer"
-            onclick={onSelectPost}
+            onClick={onSelectPost}
         >
             <Flex 
                 direction="column" 
@@ -76,7 +79,16 @@ const PostItem: React.FC<PostItemProps> = ({
                     </Text>
                     {post.imageURL && (
                         <Flex justify="center">
-                            <Image src={post.imageURL} maxHeight="460px" alt="Post Image" />
+                            {loadingImage && (
+                                <Skeleton height="200px" width="100%" borderRadius={4} />
+                            )}
+                            <Image 
+                                src={post.imageURL} 
+                                maxHeight="460px" 
+                                alt="Post Image" 
+                                display={loadingImage ? "none" : "unset"}
+                                onLoad={() => setLoadingImage(false)} 
+                            />
                         </Flex>
                     )}
                 </Stack>
