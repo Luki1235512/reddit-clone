@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertIcon, AlertTitle, CloseButton, Flex, Icon
 import { BsLink45Deg, BsMic } from "react-icons/bs";
 import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import { BiPoll } from "react-icons/bi"
-import TabItem from "./TabItems";
+import TabItem from "./TabItem";
 import { useState } from "react";
 import TextInputs from "./postForm/TextInputs";
 import ImageUpload from "./postForm/ImageUpload";
@@ -18,7 +18,7 @@ type NewPostFormProps = {
     user: User;
 };
 
-const formTabs: TabItem[] = [
+const formTabs = [
     {
         title: "Post",
         icon: IoDocumentText
