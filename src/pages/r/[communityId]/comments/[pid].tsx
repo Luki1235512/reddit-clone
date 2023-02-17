@@ -1,10 +1,12 @@
 import { Post } from "@/src/atoms/postsAtom";
 import About from "@/src/components/community/About";
 import PageContent from "@/src/components/layout/PageContent";
+import Comments from "@/src/components/posts/comments/Comments";
 import PostItem from "@/src/components/posts/PostItem";
 import { auth, firestore } from "@/src/firebase/clientApp";
 import useCommunityData from "@/src/hooks/useCommunityData";
 import usePosts from "@/src/hooks/usePosts";
+import { User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -48,7 +50,11 @@ const PostPage: React.FC = () => {
                     userVoteValue={postStateValue.postVotes.find(item => item.postId === postStateValue.selectedPost?.id)?.voteValue} 
                     userIsCreator={user?.uid === postStateValue.selectedPost?.creatorId}
                 />}
-                {/* Comments */}
+                <Comments 
+                    user={user as User} 
+                    selectedPost={postStateValue.selectedPost} 
+                    communityId={postStateValue.selectedPost?.communityId as string} 
+                />
             </>
             <>
                 {communityStateValue.currentCommunity && <About communityData={communityStateValue.currentCommunity} />}
