@@ -5,7 +5,7 @@ import { User } from "firebase/auth";
 type CommentInputProps = {
     commentText: string;
     setCommentText: (value: string) => void;
-    user: User;
+    user?: User | null;
     createLoading: boolean;
     onCreateComment: (commentText: string) => void;
 };
@@ -32,7 +32,7 @@ const CommentInput: React.FC<CommentInputProps> = ({commentText, setCommentText,
                         _placeholder={{color: "gray.500"}}
                         _focus={{
                             outline: "none",
-                            // bg: "white",
+                            bg: "white",
                             border: "1px solid black"
                         }}
                      />
