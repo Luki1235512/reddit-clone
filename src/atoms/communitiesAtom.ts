@@ -26,6 +26,6 @@ const defaultCommunityState: CommunityState = {
 };
 
 export const CommunityState = atom<CommunityState>({
-    key: "communityState",
+    key: "communitiesState",
     default: defaultCommunityState
 });

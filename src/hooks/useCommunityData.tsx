@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, increment, writeBatch } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, increment, query, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -9,7 +9,7 @@ import { auth, firestore } from "../firebase/clientApp";
 
 const useCommunityData = () => {
     const [user, loadingUser] = useAuthState(auth);
-    const router = useRouter()
+    const router = useRouter();
     const [communityStateValue, setCommunityStateValue] = useRecoilState(CommunityState);
     const setAuthModalState = useSetRecoilState(authModalState);
     const [loading, setLoading] = useState(false);
@@ -31,22 +31,30 @@ const useCommunityData = () => {
         joinCommunity(communityData);
     };
 
-    const getMySnippets = async () => {
+    const getSnippets = async () => {
         setLoading(true);
         try {
-            // GET USER SNIPPETS
-            const snippetDocs = await getDocs(collection(firestore, `users/${user?.uid}/communitySnippets`));
-            const snippets = snippetDocs.docs.map(doc => ({...doc.data()}));
-            setCommunityStateValue(prev => ({
+            const snippets = await getMySnippets(user?.uid!);
+            setCommunityStateValue((prev) => ({
                 ...prev,
-                mySnippets: snippets as CommunitySnippet[]
+                mySnippets: snippets as CommunitySnippet[],
+                initSnippetsFetched: true,
             }));
-        }
-        catch (error: any) {
-            console.log("getMySnippets error", error);
+            setLoading(false);
+        } catch (error: any) {
+            console.log("Error getting user snippets", error);
             setError(error.message);
         }
         setLoading(false);
+    };
+
+    const getMySnippets = async (userId: string) => {
+        const snippetQuery = query(
+            collection(firestore, `users/${userId}/communitySnippets`)
+        );
+      
+        const snippetDocs = await getDocs(snippetQuery);
+        return snippetDocs.docs.map((doc) => ({ ...doc.data() }));
     };
 
     const joinCommunity = async (communityData: Community) => {
@@ -120,13 +128,10 @@ const useCommunityData = () => {
     };
 
     useEffect(() => {
-        if (!user) {
-            setCommunityStateValue(prev => ({
-                ...prev,
-                mySnippets: []
-            }));
+        if (!user || !!communityStateValue.mySnippets.length) {
+            return;
         }
-        return;
+        getSnippets();
     }, [user]);
 
     useEffect(() => {
