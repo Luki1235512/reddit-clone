@@ -1,11 +1,13 @@
 import { Post } from "@/src/atoms/postsAtom";
 import { Alert, AlertIcon, Flex, Icon, Image, Skeleton, Spinner, Stack, Text } from "@chakra-ui/react";
 import moment from "moment";
-import { BsChat } from "react-icons/bs";
+import { BsChat, BsDot } from "react-icons/bs";
 import { IoArrowDownCircleOutline, IoArrowDownCircleSharp, IoArrowRedoOutline, IoArrowUpCircleOutline, IoArrowUpCircleSharp, IoBookmarkOutline } from "react-icons/io5";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { FaReddit } from "react-icons/fa";
+import Link from "next/link";
 
 
 type PostItemProps = {
@@ -15,6 +17,7 @@ type PostItemProps = {
     onVote: (event: React.MouseEvent<SVGElement, MouseEvent>, post: Post, vote: number, communityId: string) => void;
     onDeletePost: (post: Post) => Promise<boolean>;
     onSelectPost?: (post: Post) => void;
+    homePage?: boolean;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -23,7 +26,8 @@ const PostItem: React.FC<PostItemProps> = ({
     userVoteValue, 
     onVote, 
     onDeletePost, 
-    onSelectPost
+    onSelectPost,
+    homePage
 }) => {
     const [loadingImage, setLoadingImage] = useState(true);
     const [loadingDelete, setLoadingDelete] = useState(false);
@@ -100,6 +104,25 @@ const PostItem: React.FC<PostItemProps> = ({
                 <Stack spacing={1} p="10px">
                     <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
                         {/* HOME PAGE CHECK */}
+                        {homePage && (
+                            <>
+                                {post.communityImageURL ? (
+                                    <Image src={post.communityImageURL} borderRadius="full" boxSize="18px" mr={2} />
+                                ) : (
+                                    <Icon as={FaReddit} fontSize="18px" mr={1} color="blue.500" />
+                                )}
+                                <Link href={`r/${post.communityId}`}>
+                                    <Text 
+                                        fontWeight={700} 
+                                        _hover={{textDecoration: "underline"}}
+                                        onClick={event => event.stopPropagation()}
+                                    >
+                                        {`r/${post.communityId}`}
+                                    </Text>
+                                </Link>
+                                <Icon as={BsDot} color="gray.500" fontSize={8} />
+                            </>
+                        )}
                         <Text>
                             Posted by u/{post.creatorDisplayName + " "} 
                             {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
