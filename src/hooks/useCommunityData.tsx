@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { authModalState } from "../atoms/authModalAtoms";
-import { Community, CommunitySnippet, CommunityState } from "../atoms/communitiesAtom";
+import { Community, CommunitySnippet, CommunityState, defaultCommunity } from "../atoms/communitiesAtom";
 import { auth, firestore } from "../firebase/clientApp";
 
 const useCommunityData = () => {
@@ -114,7 +114,7 @@ const useCommunityData = () => {
 
     const getCommunityData = async (communityId: string) => {
         try {
-            const communityDocRef = doc(firestore, "communities", communityId);
+            const communityDocRef = doc(firestore, "communities", communityId as string);
             const communityDoc = await getDoc(communityDocRef);
 
             setCommunityStateValue(prev => ({
@@ -135,9 +135,20 @@ const useCommunityData = () => {
     }, [user]);
 
     useEffect(() => {
-        const {communityId} = router.query;
-        if (communityId && !communityStateValue.currentCommunity) {
-            getCommunityData(communityId as string);
+        const { community } = router.query;
+        if (community) {
+            const communityData = communityStateValue.currentCommunity;
+    
+            if (!communityData.id) {
+                getCommunityData(community as string);
+                return;
+            }
+        } 
+        else {
+            setCommunityStateValue((prev) => ({
+                ...prev,
+                currentCommunity: defaultCommunity,
+            }));
         }
     }, [router.query, communityStateValue.currentCommunity]);
 
