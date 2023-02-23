@@ -7,29 +7,20 @@ import { authModalState } from "../atoms/authModalAtoms";
 import { Community, CommunitySnippet, CommunityState, defaultCommunity } from "../atoms/communitiesAtom";
 import { auth, firestore } from "../firebase/clientApp";
 
-const useCommunityData = () => {
-    const [user, loadingUser] = useAuthState(auth);
+const useCommunityData = (ssrCommunityData?: boolean) => {
+    const [user] = useAuthState(auth);
     const router = useRouter();
     const [communityStateValue, setCommunityStateValue] = useRecoilState(CommunityState);
     const setAuthModalState = useSetRecoilState(authModalState);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    const onJoinOrLeavecommunity = (communityData: Community, isJoined: boolean) => {
-        // IS THE USER SIGNED IN?
-        // IF NOT => OPEN AUTH MODAL
-        if (!user) {
-            // OPEN MODAL
-            setAuthModalState({open: true, view: "login"});
+    useEffect(() => {
+        if (!user || !!communityStateValue.mySnippets.length) {
             return;
         }
-
-        if (isJoined) {
-            leaveCommunity(communityData.id);
-            return;
-        }
-        joinCommunity(communityData);
-    };
+        getSnippets();
+    }, [user]);
 
     const getSnippets = async () => {
         setLoading(true);
@@ -48,27 +39,57 @@ const useCommunityData = () => {
         setLoading(false);
     };
 
-    const getMySnippets = async (userId: string) => {
-        const snippetQuery = query(
-            collection(firestore, `users/${userId}/communitySnippets`)
-        );
-      
-        const snippetDocs = await getDocs(snippetQuery);
-        return snippetDocs.docs.map((doc) => ({ ...doc.data() }));
+    const getCommunityData = async (communityId: string) => {
+        try {
+            const communityDocRef = doc(firestore, "communities", communityId as string);
+            const communityDoc = await getDoc(communityDocRef);
+
+            setCommunityStateValue(prev => ({
+                ...prev,
+                currentCommunity: {
+                    id: communityDoc.id,
+                    ...communityDoc.data()
+                } as Community,
+            }));
+        }
+        catch (error: any) {
+            console.log("getCommunityData error", error.message);
+        }
+        setLoading(false);
     };
 
-    const joinCommunity = async (communityData: Community) => {
-        // BATCH WRITE
+    const onJoinLeaveCommunity = (community: Community, isJoined?: boolean) => {
+        if (!user) {
+            // OPEN MODAL
+            setAuthModalState({open: true, view: "login"});
+            return;
+        }
+
+        setLoading(true);
+        if (isJoined) {
+            leaveCommunity(community.id);
+            return;
+        }
+        joinCommunity(community);
+    };
+
+    const joinCommunity = async (community: Community) => {
         try {
             const batch = writeBatch(firestore);
 
-            // CREATING A NEW COMMUNITY SNIPPET
             const newSnippet: CommunitySnippet = {
-                communityId: communityData.id,
-                imageURL: communityData.imageURL || ""
+                communityId: community.id,
+                imageURL: community.imageURL || "",
             };
-            batch.set(doc(firestore, `users/${user?.uid}/communitySnippets`, communityData.id), newSnippet);
-            batch.update(doc(firestore, "communities", communityData.id), {numberOfMembers: increment(1)});
+            batch.set(
+                doc(
+                    firestore,
+                    `users/${user?.uid}/communitySnippets`,
+                    community.id
+                ),
+                newSnippet
+            );
+            batch.update(doc(firestore, "communities", community.id), {numberOfMembers: increment(1)});
 
             await batch.commit();
 
@@ -86,20 +107,15 @@ const useCommunityData = () => {
     };
 
     const leaveCommunity = async (communityId: string) => {
-        // BATCH WRITE
-        
         try {
             const batch = writeBatch(firestore);
 
-            // DELETING THE COMMUNITY SNIPPET FROM USER
-            batch.delete(doc(firestore, `users/${user?.uid}/communitySnippets`, communityId));
+            batch.delete(doc(firestore, `users/${user?.uid}/communitySnippets/${communityId}`));
 
-            // UPDATING THE numberOfMembers (-1)
             batch.update(doc(firestore, "communities", communityId), {numberOfMembers: increment(-1)});
 
             await batch.commit();
 
-            // UPDATE RECOIL STATE - communityState.mySnippets
             setCommunityStateValue(prev => ({
                 ...prev,
                 mySnippets: prev.mySnippets.filter(item => item.communityId !== communityId)
@@ -112,27 +128,14 @@ const useCommunityData = () => {
         setLoading(false);
     };
 
-    const getCommunityData = async (communityId: string) => {
-        try {
-            const communityDocRef = doc(firestore, "communities", communityId as string);
-            const communityDoc = await getDoc(communityDocRef);
-
-            setCommunityStateValue(prev => ({
-                ...prev,
-                currentCommunity: {id: communityDoc.id, ...communityDoc.data()} as Community
-            }));
-        }
-        catch (error) {
-            console.log("getCommunityData", error);
-        }
+    const getMySnippets = async (userId: string) => {
+        const snippetQuery = query(
+            collection(firestore, `users/${userId}/communitySnippets`)
+        );
+      
+        const snippetDocs = await getDocs(snippetQuery);
+        return snippetDocs.docs.map((doc) => ({ ...doc.data() }));
     };
-
-    useEffect(() => {
-        if (!user || !!communityStateValue.mySnippets.length) {
-            return;
-        }
-        getSnippets();
-    }, [user]);
 
     useEffect(() => {
         const { community } = router.query;
@@ -154,8 +157,10 @@ const useCommunityData = () => {
 
     return {
         communityStateValue,
-        onJoinOrLeavecommunity,
-        loading
+        onJoinLeaveCommunity,
+        loading,
+        setLoading,
+        error,
     };
 };
 

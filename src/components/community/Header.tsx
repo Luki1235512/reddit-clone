@@ -8,7 +8,8 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({communityData}) => {
-    const {communityStateValue, onJoinOrLeavecommunity, loading} = useCommunityData();
+
+    const {communityStateValue, onJoinOrLeavecommunity, loading, error} = useCommunityData(!!communityData);
     const isJoined = !!communityStateValue.mySnippets.find(item => (item.communityId === communityData.id));
 
     return (

@@ -1,25 +1,21 @@
-import { authModalState } from "@/src/atoms/authModalAtoms";
-import { auth } from "@/src/firebase/clientApp";
+import useDirectory from "@/src/hooks/useDirectory";
 import { Flex, Icon, Input } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { BsLink45Deg } from "react-icons/bs";
 import { FaReddit } from "react-icons/fa";
 import { IoImageOutline } from "react-icons/io5";
-import { useSetRecoilState } from "recoil";
 
 const CreatePostLink: React.FC = () => {
     const router = useRouter();
-    const [user] = useAuthState(auth);
-    const setAuthModalState = useSetRecoilState(authModalState);
+    const {toggleMenuOpen} = useDirectory();
 
     const onClick = () => {
-        if (!user) {
-            setAuthModalState({open: true, view: "login"});
+        const {community} = router.query;
+        if (community) {
+            router.push(`/r/${community}/submit`);
             return;
         }
-        const {communityId} = router.query;
-        router.push(`/r/${communityId}/submit`);
+        toggleMenuOpen();
     };
 
     return (
@@ -36,9 +32,9 @@ const CreatePostLink: React.FC = () => {
         >
             <Icon as={FaReddit} fontSize={36} color="gray.300" mr={4} />
             <Input
-                placeholder="Crate Post"
+                placeholder="Create Post"
                 fontSize="10pt"
-                _placeholder={{color: "gray.300"}}
+                _placeholder={{color: "gray.500"}}
                 _hover={{
                     bg: "white",
                     border: "1px solid",
