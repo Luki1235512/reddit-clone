@@ -5,6 +5,7 @@ import { HiLockClosed } from "react-icons/hi";
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 import { firestore, auth } from "@/src/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/router";
 
 type CreateCommunityModalProps = {
     open: boolean;
@@ -18,6 +19,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({open, handle
     const [communityType, setCommunityType] = useState("public");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.value.length > 21) {
@@ -70,6 +72,9 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({open, handle
                     isModerator: true,
                 });
             });
+
+            handleClose();
+            router.push(`r/${communityName}`);
         }
         catch (error: any) {
             console.log("handleCreateCommunity error", error);
