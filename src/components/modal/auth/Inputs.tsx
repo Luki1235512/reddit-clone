@@ -4,18 +4,22 @@ import { useRecoilValue } from "recoil";
 import { authModalState } from "@/src/atoms/authModalAtoms";
 import Login from "@/src/components/modal/auth/Login";
 import SignUp from "@/src/components/modal/auth/SignUp";
+import { ModalView } from "@/src/atoms/authModalAtom";
 
 type AuthInputsProps = {
-
+    toggleView: (view: ModalView) => void;
 };
 
-const AuthInputs: React.FC<AuthInputsProps> = () => {
+const AuthInputs: React.FC<AuthInputsProps> = ({toggleView}) => {
     const modalState = useRecoilValue(authModalState);
 
     return (
         <Flex direction="column" align="center" width="100%" mt={4}>
-            {modalState.view === "login" && <Login />}
-            {modalState.view === "signup" && <SignUp />}
+            {modalState.view === "login" ? (
+                <Login toggleView={toggleView} />
+            ) : (
+                <SignUp toggleView={toggleView} />
+            )}
         </Flex>
     );
 };
