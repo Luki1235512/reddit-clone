@@ -8,6 +8,7 @@ import { User } from "firebase/auth";
 const OAuthButtons: React.FC = () => {
     const [signInWithGoogle, userCred, loading, error] = useSignInWithGoogle(auth);
 
+    // DONT TOUCH FOR NOW
     const createUserDocument = async (user: User) => {
         const userDocRef = doc(firestore, "users", user.uid);
         await setDoc(userDocRef, JSON.parse(JSON.stringify(user)));
@@ -18,6 +19,7 @@ const OAuthButtons: React.FC = () => {
             createUserDocument(userCred.user);
         }
     }, [userCred]);
+    // DONT TOUCH FOR NOW
 
     return (
         <Flex direction="column" width="100%" mb={4}>

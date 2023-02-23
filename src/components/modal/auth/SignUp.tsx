@@ -40,6 +40,7 @@ const SignUp: React.FC = () => {
         }));
     };
 
+    // DONT TOUCH FOR NOW
     const createUserDocument = async (user: User) => {
         await addDoc(collection(firestore, "users"), JSON.parse(JSON.stringify(user)));
     };
@@ -49,6 +50,7 @@ const SignUp: React.FC = () => {
             createUserDocument(userCred.user);
         }
     }, [userCred]);
+    // DONT TOUCH FOR NOW
 
     return (
         <form onSubmit={onSubmit}>

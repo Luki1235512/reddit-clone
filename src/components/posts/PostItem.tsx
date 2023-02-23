@@ -124,7 +124,7 @@ const PostItem: React.FC<PostItemProps> = ({
                             </>
                         )}
                         <Text>
-                            Posted by u/{post.creatorDisplayName + " "} 
+                            Posted by u/{post.userDisplayText + " "} 
                             {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
                         </Text>
                     </Stack>
