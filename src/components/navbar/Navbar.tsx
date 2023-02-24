@@ -4,7 +4,7 @@ import SearchInput from "@/src/components/navbar/SearchInput";
 import RightContent from "@/src/components/navbar/rightContent/RightContent";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/src/firebase/clientApp";
-import Directory from "./directory/Directory";
+import Directory from "./directory";
 
 const Navbar: React.FC = () => {
     const [user, loading, error] = useAuthState(auth);
