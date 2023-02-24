@@ -1,142 +1,171 @@
 import { Stack } from "@chakra-ui/react";
-import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
+import { collection, DocumentData, getDocs, limit, onSnapshot, orderBy, query, QuerySnapshot, where } from "firebase/firestore";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Post, PostVote } from "../atoms/postsAtom";
 import CreatePostLink from "../components/community/CreatePostLink";
-import PageContent from "../components/layout/PageContent";
-import PostItem from "../components/posts/postItem/PostItem";
-import PostLoader from "../components/posts/PostLoader";
+import PostItem from "../components/posts/postItem";
+import PostLoader from "../components/posts/Loader";
 import { auth, firestore } from "../firebase/clientApp";
-import useCommunityData from "../hooks/useCommunityData";
 import usePosts from "../hooks/usePosts";
+import { useRecoilValue } from "recoil";
+import { CommunityState } from "../atoms/communitiesAtom";
+import PageContentLayot from "../components/layout/PageContent";
 
 const Home: NextPage = () => {
   const [user, loadingUser] = useAuthState(auth)
-  const [loading, setLoading] = useState(false);
-  const {postStateValue, setPostStateValue, onSelectPost, onDeletePost, onVote} = usePosts();
-  const {communityStateValue} = useCommunityData();
+  const {postStateValue, setPostStateValue, onVote, onSelectPost, onDeletePost, loading, setLoading} = usePosts();
+  const communityStateValue = useRecoilValue(CommunityState);
 
-  const buildUserHomeFeed = async () => {
+  const getUserHomePosts = async () => {
     setLoading(true);
     try {
+      const feedPosts: Post[] = [];
+
       if (communityStateValue.mySnippets.length) {
-        // GET POSTS FROM USER'S COMMUNITIES
         const myCommunityIds = communityStateValue.mySnippets.map(snippet => snippet.communityId);
-        const postQuery = query(
-          collection(firestore, "posts"),
-          where("communityId", "in", myCommunityIds),
-          limit(10));
-          const postDocs = await getDocs(postQuery);
-          const posts = postDocs.docs.map(doc => ({
+        let postPromises: Array<Promise<QuerySnapshot<DocumentData>>> = [];
+        [0, 1, 2].forEach(index => {
+          if (!myCommunityIds[index]) {
+            return;
+          }
+          postPromises.push(
+            getDocs(
+              query(
+                collection(firestore, "posts"),
+                where("communityId", "==", myCommunityIds[index]),
+                limit(3)
+              )
+            )
+          );
+        });
+        const queryResults = await Promise.all(postPromises);
+        queryResults.forEach(result => {
+          const posts = result.docs.map(doc => ({
             id: doc.id,
             ...doc.data(),
-          }));
-          setPostStateValue(prev => ({
-            ...prev,
-            posts: posts as Post[],
-          }));
+          })) as Post[];
+          feedPosts.push(...posts);
+        })
       }
       else {
-        buildNoUserHomeFeed();
+        console.log("USER HAS NO COMMUNITIES - GETTING GENERAL POSTS")
+        
+        const postQuery = query(
+          collection(firestore, "posts"),
+          orderBy("voteStatus", "desc"),
+          limit(10)
+        );
+        const postDocs = await getDocs(postQuery);
+        const posts = postDocs.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Post[];
+        feedPosts.push(...posts);
       }
+
+      setPostStateValue(prev => ({
+        ...prev,
+        posts: feedPosts
+      }))
     }
-    catch (error) {
-      console.log("buildUserHomeFeed error", error);
+    catch (error: any) {
+      console.log("getUserHomePosts error", error.message);
     }
     setLoading(false);
   };
 
-  const buildNoUserHomeFeed = async () => {
+  const getNoUserHomePost = async () => {
     setLoading(true);
     try {
       const postQuery = query(
         collection(firestore, "posts"),
         orderBy("voteStatus", "desc"),
-        limit(10));
+        limit(10)
+      );
+      const postDocs = await getDocs(postQuery);
+      const posts = postDocs.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-        const postDocs = await getDocs(postQuery);
-        const posts = postDocs.docs.map(doc => ({id: doc.id, ...doc.data()}));
-        setPostStateValue(prev => ({
-          ...prev,
-          posts: posts as Post[]
-        }));
-
-        // setPostState
+      setPostStateValue(prev => ({
+        ...prev,
+        posts: posts as Post[],
+      }));
     }
-    catch (error) {
-      console.log("buildNoUserHomeFeed error", error);
+    catch (error: any) {
+      console.log("getNoUserHomePosts error", error.message);
     }
     setLoading(false);
-  };
+  }
 
   const getUserPostVotes = async () => {
-    try {
-        const postIds = postStateValue.posts.map(post => post.id);
-        const postVotesQuery = query(
-          collection(firestore, `users/${user?.uid}/postVotes`),
-          where("postId", "in", postIds)
-        );
-        const postVoteDocs = await getDocs(postVotesQuery);
-        const postVotes = postVoteDocs.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
+    const postIds = postStateValue.posts.map(post => post.id);
+    const postVotesQuery = query(
+      collection(firestore, `users/${user?.uid}/postVotes`),
+        where("postId", "in", postIds)
+      );
+      const unsubscribe = onSnapshot(postVotesQuery, (querySnapshot) => {
+        const postVotes = querySnapshot.docs.map(postVote => ({
+          id: postVote.id,
+          ...postVote.data()
         }));
-
         setPostStateValue(prev => ({
           ...prev,
           postVotes: postVotes as PostVote[],
         }));
-    }
-    catch (error) {
-      console.log("getUserPostVotes error", error);
-    }
+      })
+      return () => unsubscribe();
   };
 
-  // useEffects
-
   useEffect(() => {
-    if (communityStateValue.snippetsFetched) {
-      buildUserHomeFeed();
+    if (!communityStateValue.initSnippetsFetched) {
+      return;
     }
-  }, [communityStateValue.snippetsFetched]);
+    if (user) {
+      getUserHomePosts();
+    }
+  }, [user, communityStateValue.initSnippetsFetched]);
 
   useEffect(() => {
     if (!user && !loadingUser) {
-      buildNoUserHomeFeed();
+      getNoUserHomePost();
     }
   }, [user, loadingUser]);
 
   useEffect(() => {
-    if (user && postStateValue.posts.length) {
-      getUserPostVotes();
+    if (!user?.uid || !postStateValue.posts.length) {
+      return;
     }
+    getUserPostVotes();
     return () => {
       setPostStateValue(prev => ({
         ...prev,
-        postVotes: [],
-      }));
+        postVotes: []
+      }))
     }
-  }, [user, postStateValue.posts]);
+  }, [postStateValue.posts, user?.uid]);
 
   return (
-    <PageContent>
+    <PageContentLayot>
       <>
       <CreatePostLink />
         {loading ? (
           <PostLoader />
         ) : (
           <Stack>
-            {postStateValue.posts.map(post => (
+            {postStateValue.posts.map((post: Post, index) => (
               <PostItem
                 key={post.id}
                 post={post}
-                onSelectPost={onSelectPost}
-                onDeletePost={onDeletePost}
+                postIdx={index}
                 onVote={onVote}
+                onDeletePost={onDeletePost}
                 userVoteValue={postStateValue.postVotes.find(item => item.postId === post.id)?.voteValue}
                 userIsCreator={user?.uid === post.creatorId}
+                onSelectPost={onSelectPost}
                 homePage
               />
             ))}
@@ -146,7 +175,7 @@ const Home: NextPage = () => {
       <>
         {/* RECOMENDATIONS */}
       </>
-    </PageContent>
+    </PageContentLayot>
   );
 };
 

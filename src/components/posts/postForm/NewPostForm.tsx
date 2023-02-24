@@ -14,11 +14,6 @@ import { firestore, storage } from "@/src/firebase/clientApp";
 import { ref, uploadString, getDownloadURL } from "@firebase/storage";
 import useSelectFile from "@/src/hooks/useSelectFile";
 
-type NewPostFormProps = {
-    user: User;
-    communityImageURL?: string;
-};
-
 const formTabs = [
     {
         title: "Post",
@@ -47,7 +42,13 @@ export type TabItem = {
     icon: typeof Icon.arguments
 };
 
-const NewPostForm: React.FC<NewPostFormProps> = ({user, communityImageURL}) => {
+type NewPostFormProps = {
+    communityId: string;
+    communityImageURL?: string;
+    user: User;
+};
+
+const NewPostForm: React.FC<NewPostFormProps> = ({communityId, user, communityImageURL}) => {
     const router = useRouter();
     const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
     const [textInputs, setTextInputs] = useState({

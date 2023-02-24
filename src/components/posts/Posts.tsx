@@ -4,36 +4,61 @@ import { auth, firestore } from "@/src/firebase/clientApp";
 import usePosts from "@/src/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import PostItem from "./postItem/PostItem";
-import PostLoader from "./PostLoader";
+import PostItem from "./postItem";
+import PostLoader from "./Loader";
 
 type PostProps = {
-    communityData: Community;
+    communityData?: Community;
+    userId?: string;
+    loadingUser: boolean;
 };
 
-const Posts: React.FC<PostProps> = ({communityData}) => {
-    const [user] = useAuthState(auth);
+const Posts: React.FC<PostProps> = ({communityData, userId, loadingUser}) => {
     const [loading, setLoading] = useState(false);
-    const {postStateValue, setPostStateValue, onVote, onSelectPost, onDeletePost} = usePosts();
+    const router = useRouter();
+    const {postStateValue, setPostStateValue, onVote, onDeletePost} = usePosts(communityData!);
+
+    const onSelectPost = (post: Post, postIdx: number) => {
+        setPostStateValue(prev => ({
+            ...prev,
+            selectedPost: {...post, postIdx},
+        }));
+        router.push(`/r/${communityData?.id!}/comments/${post.id}`);
+    };
+
+    useEffect(() => {
+        if (postStateValue.postsCache[communityData?.id!] && !postStateValue.postUpdateRequired) {
+            setPostStateValue(prev => ({
+                ...prev,
+                posts: postStateValue.postsCache[communityData?.id!],
+            }));
+            return;
+        }
+
+        getPosts();
+    }, [communityData, postStateValue.postUpdateRequired]);
 
     const getPosts = async () => {
+        setLoading(true);
         try {
-            setLoading(true);
-            // GET POSTS FOR THIS COMMUNITY
             const postQuery = query(
                 collection(firestore, "posts"),
-                where("communityId", "==", communityData.id),
+                where("communityId", "==", communityData?.id!),
                 orderBy("createdAt", "desc")
             );
             const postDocs = await getDocs(postQuery);
-
-            // STORE IN POST STATE
             const posts = postDocs.docs.map(doc => ({id: doc.id, ...doc.data()}));
             setPostStateValue(prev => ({
                 ...prev,
                 posts: posts as Post[],
+                postsCache: {
+                    ...prev.postsCache,
+                    [communityData?.id!]: posts as Post[]
+                },
+                postUpdateRequired: false
             }));
         }
         catch (error: any) {
@@ -42,23 +67,19 @@ const Posts: React.FC<PostProps> = ({communityData}) => {
         setLoading(false);
     };
 
-    useEffect(() => {
-        getPosts();
-    }, [])
-
     return (
         <>
             {loading ? (
                 <PostLoader />
             ) : (
                 <Stack>
-                    {postStateValue.posts.map(item => (
+                    {postStateValue.posts.map((post: Post, index) => (
                         <PostItem 
-                            key={item.id}
-                            post={item} 
-                            userIsCreator={user?.uid === item.creatorId}
+                            key={post.id}
+                            post={post} 
+                            userIsCreator={userId === post.creatorId}
                             userVoteValue={
-                                postStateValue.postVotes.find(vote => vote.postId === item.id)?.voteValue
+                                postStateValue.postVotes.find(item => item.postId === post.id)?.voteValue
                             } 
                             onVote={onVote}
                             onSelectPost={onSelectPost}
