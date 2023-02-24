@@ -3,14 +3,14 @@ import { Button, Flex, Text, Textarea } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 
 type CommentInputProps = {
-    commentText: string;
-    setCommentText: (value: string) => void;
+    comment: string;
+    setComment: (value: string) => void;
+    loading: boolean;
     user?: User | null;
-    createLoading: boolean;
-    onCreateComment: (commentText: string) => void;
+    onCreateComment: (comment: string) => void;
 };
 
-const CommentInput: React.FC<CommentInputProps> = ({commentText, setCommentText, user, createLoading, onCreateComment}) => {
+const CommentInput: React.FC<CommentInputProps> = ({comment, setComment, loading, user, onCreateComment}) => {
     return (
         <Flex direction="column" position="relative">
             {user ? (
@@ -22,8 +22,8 @@ const CommentInput: React.FC<CommentInputProps> = ({commentText, setCommentText,
                         </span>
                     </Text>
                     <Textarea
-                        value={commentText}
-                        onChange={(event) => setCommentText(event.target.value)}
+                        value={comment}
+                        onChange={(event) => setComment(event.target.value)}
                         placeholder="What are your thoughts?"
                         fontSize="10pt"
                         borderRadius={4}
@@ -48,9 +48,9 @@ const CommentInput: React.FC<CommentInputProps> = ({commentText, setCommentText,
                      >
                         <Button 
                             height="26px"
-                            disabled={!commentText.length}
-                            isLoading={createLoading}
-                            onClick={() => onCreateComment(commentText)}
+                            disabled={!comment.length}
+                            isLoading={loading}
+                            onClick={() => onCreateComment(comment)}
                         >
                             Comment
                         </Button>
