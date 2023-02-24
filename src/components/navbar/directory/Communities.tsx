@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import CreateCommunityModal from "../../modal/createCommunity";
 import { GrAdd } from "react-icons/gr";
 import { useRecoilValue } from "recoil";
-import { CommunityState } from "@/src/atoms/communitiesAtom";
+import { communityState } from "@/src/atoms/communitiesAtom";
 import MenuListItem from "./MenuListItem";
 import { FaReddit } from "react-icons/fa";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -16,7 +16,7 @@ type CommunitiesProps = {
 const Communities: React.FC<CommunitiesProps> = (menuOpen) => {
     const [user] = useAuthState(auth);
     const [open, setOpen] = useState(false);
-    const mySnippets = useRecoilValue(CommunityState).mySnippets;
+    const mySnippets = useRecoilValue(communityState).mySnippets;
 
     return (
         <>

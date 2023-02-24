@@ -1,4 +1,4 @@
-import { Community, CommunityState } from "@/src/atoms/communitiesAtom";
+import { Community, communityState } from "@/src/atoms/communitiesAtom";
 import About from "@/src/components/community/About";
 import CreatePostLink from "@/src/components/community/CreatePostLink";
 import Header from "@/src/components/community/Header";
@@ -21,7 +21,7 @@ interface CommunityPageProps {
 const CommunityPage: NextPage<CommunityPageProps> = ({communityData}) => {
     const [user, loadingUser] = useAuthState(auth);
     
-    const [communityStateValue, setCommunityStateValue] = useRecoilState(CommunityState);
+    const [communityStateValue, setCommunityStateValue] = useRecoilState(communityState);
 
     useEffect(() => {
         setCommunityStateValue((prev) => ({

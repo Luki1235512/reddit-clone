@@ -1,4 +1,4 @@
-import { Community, CommunityState } from "@/src/atoms/communitiesAtom";
+import { Community, communityState } from "@/src/atoms/communitiesAtom";
 import { auth, firestore, storage } from "@/src/firebase/clientApp";
 import { Box, Button, Divider, Flex, Icon, Spinner, Stack, Text, Image, SkeletonCircle, Skeleton } from "@chakra-ui/react";
 import moment from "moment";
@@ -29,7 +29,7 @@ const About: React.FC<AboutProps> = ({
     const [user] = useAuthState(auth);
     const router = useRouter();
     const selectFileRef = useRef<HTMLInputElement>(null);
-    const setCommunityStateValue = useSetRecoilState(CommunityState);
+    const setCommunityStateValue = useSetRecoilState(communityState);
 
     const [selectedFile, setSelectedFile] = useState<string>();
 

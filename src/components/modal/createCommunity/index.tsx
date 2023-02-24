@@ -7,7 +7,7 @@ import { firestore, auth } from "@/src/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
-import { CommunityState } from "@/src/atoms/communitiesAtom";
+import { communityState } from "@/src/atoms/communitiesAtom";
 import ModalWrapper from "../ModalWrapper";
 
 type CreateCommunityModalProps = {
@@ -17,7 +17,7 @@ type CreateCommunityModalProps = {
 };
 
 const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({isOpen, handleClose, userId}) => {
-    const setSnippetState = useSetRecoilState(CommunityState);
+    const setSnippetState = useSetRecoilState(communityState);
     const [name, setName] = useState("");
     const [charsRemaining, setCharsRemaining] = useState(21);
     const [nameError, setNameError] = useState("");

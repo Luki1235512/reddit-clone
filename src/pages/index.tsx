@@ -10,13 +10,13 @@ import PostLoader from "../components/posts/Loader";
 import { auth, firestore } from "../firebase/clientApp";
 import usePosts from "../hooks/usePosts";
 import { useRecoilValue } from "recoil";
-import { CommunityState } from "../atoms/communitiesAtom";
+import { communityState } from "../atoms/communitiesAtom";
 import PageContentLayot from "../components/layout/PageContent";
 
 const Home: NextPage = () => {
   const [user, loadingUser] = useAuthState(auth)
   const {postStateValue, setPostStateValue, onVote, onSelectPost, onDeletePost, loading, setLoading} = usePosts();
-  const communityStateValue = useRecoilValue(CommunityState);
+  const communityStateValue = useRecoilValue(communityState);
 
   const getUserHomePosts = async () => {
     setLoading(true);

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { authModalState } from "../atoms/authModalAtoms";
-import { Community, CommunityState } from "../atoms/communitiesAtom";
+import { Community, communityState } from "../atoms/communitiesAtom";
 import { Post, postState, PostVote } from "../atoms/postsAtom";
 import { auth, firestore, storage } from "../firebase/clientApp";
 
@@ -16,7 +16,7 @@ const usePosts = (communityData?: Community) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter();
-    const communnityStateValue = useRecoilValue(CommunityState);
+    const communnityStateValue = useRecoilValue(communityState);
     
     const onSelectPost = (post: Post, postIdx: number) => {
         setPostStateValue(prev => ({

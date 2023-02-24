@@ -1,4 +1,4 @@
-import { CommunityState } from "@/src/atoms/communitiesAtom";
+import { communityState } from "@/src/atoms/communitiesAtom";
 import About from "@/src/components/community/About";
 import PageContentLayot from "@/src/components/layout/PageContent";
 import PageContent from "@/src/components/layout/PageContent";
@@ -14,7 +14,7 @@ import { useRecoilValue } from "recoil";
 
 const CreateCommunityPostPage: NextPage = () => {
     const [user, loadingUser, error] = useAuthState(auth);
-    const communityStateValue = useRecoilValue(CommunityState);
+    const communityStateValue = useRecoilValue(communityState);
     const {loading} = useCommunityData();
 
     useEffect(() => {
