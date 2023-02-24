@@ -41,38 +41,38 @@ const AuthModal: React.FC = () => {
 
     return (
         <ModalWrapper isOpen={modalState.open} onClose={handleClose}>
-            <ModalHeader display="flex" flexDirection="column" alignItems="center">
-                {modalState.view === "login" && "Login"}
-                {modalState.view === "signup" && "Sign Up"}
-                {modalState.view === "resetPassword" && "Reset Password"}
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-                pb={6}
+          <ModalHeader display="flex" flexDirection="column" alignItems="center">
+            {modalState.view === "login" && "Login"}
+            {modalState.view === "signup" && "Sign Up"}
+            {modalState.view === "resetPassword" && "Reset Password"}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            pb={6}
+          >
+            <Flex
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+              width="70%"
             >
-                <Flex
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    width={700}
-                >
-                    {modalState.view === "login" || modalState.view === "signup" ? (
-                        <>
-                            <OAuthButtons />
-                            OR
-                            <AuthInputs toggleView={toggleView} />
-                        </>
-                    ) : (
-                        <ResetPassword toggleView={toggleView} />
-                    )}
-                </Flex>
-            </ModalBody>
+              {modalState.view === "login" || modalState.view === "signup" ? (
+                <>
+                  <OAuthButtons />
+                  OR
+                  <AuthInputs toggleView={toggleView} />
+                </>
+              ) : (
+                <ResetPassword toggleView={toggleView} />
+              )}
+            </Flex>
+          </ModalBody>
         </ModalWrapper>
-    );
+      );
 };
 
 export default AuthModal;
