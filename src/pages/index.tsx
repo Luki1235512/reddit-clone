@@ -1,7 +1,7 @@
 import { Stack } from "@chakra-ui/react";
 import { collection, DocumentData, getDocs, limit, onSnapshot, orderBy, query, QuerySnapshot, where } from "firebase/firestore";
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Post, PostVote } from "../atoms/postsAtom";
 import CreatePostLink from "../components/community/CreatePostLink";
@@ -11,12 +11,13 @@ import { auth, firestore } from "../firebase/clientApp";
 import usePosts from "../hooks/usePosts";
 import { useRecoilValue } from "recoil";
 import { communityState } from "../atoms/communitiesAtom";
-import PageContentLayot from "../components/layout/PageContent";
+import PageContentLayout from "../components/layout/PageContent";
 
 const Home: NextPage = () => {
   const [user, loadingUser] = useAuthState(auth)
   const {postStateValue, setPostStateValue, onVote, onSelectPost, onDeletePost, loading, setLoading} = usePosts();
   const communityStateValue = useRecoilValue(communityState);
+  console.log("SNIPPETS", communityStateValue)
 
   const getUserHomePosts = async () => {
     setLoading(true);
@@ -149,9 +150,9 @@ const Home: NextPage = () => {
   }, [postStateValue.posts, user?.uid]);
 
   return (
-    <PageContentLayot>
+    <PageContentLayout>
       <>
-      <CreatePostLink />
+        <CreatePostLink />
         {loading ? (
           <PostLoader />
         ) : (
@@ -163,7 +164,11 @@ const Home: NextPage = () => {
                 postIdx={index}
                 onVote={onVote}
                 onDeletePost={onDeletePost}
-                userVoteValue={postStateValue.postVotes.find(item => item.postId === post.id)?.voteValue}
+                userVoteValue={
+                  postStateValue.postVotes.find(
+                    (item) => item.postId === post.id
+                  )?.voteValue
+                }
                 userIsCreator={user?.uid === post.creatorId}
                 onSelectPost={onSelectPost}
                 homePage
@@ -172,10 +177,10 @@ const Home: NextPage = () => {
           </Stack>
         )}
       </>
-      <>
-        {/* RECOMENDATIONS */}
-      </>
-    </PageContentLayot>
+      <Stack spacing={5} position="sticky" top="14px">
+
+      </Stack>
+    </PageContentLayout>
   );
 };
 

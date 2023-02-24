@@ -3,7 +3,7 @@ import About from "@/src/components/community/About";
 import CreatePostLink from "@/src/components/community/CreatePostLink";
 import Header from "@/src/components/community/Header";
 import NotFound from "@/src/components/community/NotFound";
-import PageContentLayot from "@/src/components/layout/PageContent";
+import PageContentLayout from "@/src/components/layout/PageContent";
 import Posts from "@/src/components/posts/Posts";
 import { auth, firestore } from "@/src/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
@@ -37,7 +37,7 @@ const CommunityPage: NextPage<CommunityPageProps> = ({communityData}) => {
     return (
         <>
             <Header communityData={communityData} />
-            <PageContentLayot>
+            <PageContentLayout>
                 <>
                     <CreatePostLink />
                     <Posts
@@ -49,7 +49,7 @@ const CommunityPage: NextPage<CommunityPageProps> = ({communityData}) => {
                 <>
                     <About communityData={communityData} />
                 </>
-            </PageContentLayot>
+            </PageContentLayout>
         </>
     );
 };

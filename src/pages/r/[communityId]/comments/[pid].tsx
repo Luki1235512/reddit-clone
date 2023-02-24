@@ -1,5 +1,6 @@
 import { Post } from "@/src/atoms/postsAtom";
 import About from "@/src/components/community/About";
+import PageContentLayout from "@/src/components/layout/PageContent";
 import Comments from "@/src/components/posts/comments";
 import PostLoader from "@/src/components/posts/Loader";
 import PostItem from "@/src/components/posts/postItem";
@@ -51,51 +52,48 @@ const PostPage: React.FC = () => {
     }, [router.query, postStateValue.selectedPost]);
 
     return (
-        <PageContentLayout>
-          {/* Left Content */}
-          <>
-            {loading ? (
-              <PostLoader />
-            ) : (
-              <>
-                {postStateValue.selectedPost && (
-                  <>
-                    <PostItem
-                      post={postStateValue.selectedPost}
-                      // postIdx={postStateValue.selectedPost.postIdx}
-                      onVote={onVote}
-                      onDeletePost={onDeletePost}
-                      userVoteValue={
-                        postStateValue.postVotes.find(
-                          (item) => item.postId === postStateValue.selectedPost!.id
-                        )?.voteValue
-                      }
-                      userIsCreator={
-                        user?.uid === postStateValue.selectedPost.creatorId
-                      }
-                      router={router}
-                    />
-                    <Comments
-                      user={user}
-                      community={community as string}
-                      selectedPost={postStateValue.selectedPost}
-                    />
-                  </>
-                )}
-              </>
-            )}
-          </>
-          {/* Right Content */}
-          <>
-            <About
-              communityData={
-                communityStateValue.currentCommunity
-                // communityStateValue.visitedCommunities[community as string]
-              }
-              loading={loading}
-            />
-          </>
-        </PageContentLayout>
-      );
+      <PageContentLayout>
+        {/* Left Content */}
+        <>
+          {loading ? (
+            <PostLoader />
+          ) : (
+            <>
+              {postStateValue.selectedPost && (
+                <>
+                  <PostItem
+                    post={postStateValue.selectedPost}
+                    onVote={onVote}
+                    onDeletePost={onDeletePost}
+                    userVoteValue={
+                      postStateValue.postVotes.find(
+                        (item) => item.postId === postStateValue.selectedPost!.id
+                      )?.voteValue
+                    }
+                    userIsCreator={
+                      user?.uid === postStateValue.selectedPost.creatorId
+                    }
+                    router={router}
+                  />
+                  <Comments
+                    user={user}
+                    community={community as string}
+                    selectedPost={postStateValue.selectedPost}
+                  />
+                </>
+              )}
+            </>
+          )}
+        </>
+        <>
+          <About
+            communityData={
+              communityStateValue.currentCommunity
+            }
+            loading={loading}
+          />
+        </>
+      </PageContentLayout>
+    );
     };
     export default PostPage;

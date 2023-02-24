@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, increment, query, writeBatch } from "firebase/firestore";
+import { doc, getDoc, increment, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -6,6 +6,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { authModalState } from "../atoms/authModalAtoms";
 import { Community, CommunitySnippet, communityState, defaultCommunity } from "../atoms/communitiesAtom";
 import { auth, firestore } from "../firebase/clientApp";
+import { getMySnippets } from "../helpers/firestore";
 
 const useCommunityData = (ssrCommunityData?: boolean) => {
     const [user] = useAuthState(auth);
@@ -14,6 +15,7 @@ const useCommunityData = (ssrCommunityData?: boolean) => {
     const setAuthModalState = useSetRecoilState(authModalState);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
 
     useEffect(() => {
         if (!user || !!communityStateValue.mySnippets.length) {
@@ -126,15 +128,6 @@ const useCommunityData = (ssrCommunityData?: boolean) => {
             setError(error.message);
         }
         setLoading(false);
-    };
-
-    const getMySnippets = async (userId: string) => {
-        const snippetQuery = query(
-            collection(firestore, `users/${userId}/communitySnippets`)
-        );
-      
-        const snippetDocs = await getDocs(snippetQuery);
-        return snippetDocs.docs.map((doc) => ({ ...doc.data() }));
     };
 
     useEffect(() => {
