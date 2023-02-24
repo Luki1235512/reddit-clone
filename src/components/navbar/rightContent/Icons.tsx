@@ -1,15 +1,19 @@
-import { Flex, Icon } from "@chakra-ui/react";
+import { Box, Flex, Icon } from "@chakra-ui/react";
 import React from "react";
 import { BsArrowUpRightCircle, BsChatDots } from "react-icons/bs";
-import { IoFilterCircleOutline, IoNotificationsCircleOutline, IoNotificationsOutline, IoVideocamOutline } from "react-icons/io5";
+import { IoFilterCircleOutline, IoNotificationsOutline, IoVideocamOutline } from "react-icons/io5";
 import { GrAdd } from "react-icons/gr";
+import useDirectory from "@/src/hooks/useDirectory";
 
-const Icons: React.FC = () => {
+const ActionIcons: React.FC = () => {
+
+    const {toggleMenuOpen} = useDirectory();
+
     return (
         <Flex>
-            <Flex
+            <Box
                 display={{base: "none", md: "flex"}}
-                align="center" 
+                alignItems="center" 
                 borderRight="1px solid" 
                 borderColor="gray.200"
             >
@@ -43,7 +47,7 @@ const Icons: React.FC = () => {
                 >
                     <Icon as={IoVideocamOutline} fontSize={22} />
                 </Flex>
-            </Flex>
+            </Box>
             <>
                 <Flex 
                     mr={1.5} 
@@ -73,6 +77,7 @@ const Icons: React.FC = () => {
                     cursor="pointer" 
                     borderRadius={4} 
                     _hover={{bg: "gray.200"}}
+                    onClick={toggleMenuOpen}
                 >
                     <Icon as={GrAdd} fontSize={20} />
                 </Flex>
@@ -81,4 +86,4 @@ const Icons: React.FC = () => {
     );
 };
 
-export default Icons;
+export default ActionIcons;
