@@ -2,7 +2,7 @@ import { Post } from "@/src/atoms/postsAtom";
 import About from "@/src/components/community/About";
 import PageContent from "@/src/components/layout/PageContent";
 import Comments from "@/src/components/posts/comments/Comments";
-import PostItem from "@/src/components/posts/PostItem";
+import PostItem from "@/src/components/posts/postItem/PostItem";
 import { auth, firestore } from "@/src/firebase/clientApp";
 import useCommunityData from "@/src/hooks/useCommunityData";
 import usePosts from "@/src/hooks/usePosts";

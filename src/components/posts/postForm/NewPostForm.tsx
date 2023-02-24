@@ -4,8 +4,8 @@ import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import { BiPoll } from "react-icons/bi"
 import TabItem from "./TabItem";
 import { useState } from "react";
-import TextInputs from "./postForm/TextInputs";
-import ImageUpload from "./postForm/ImageUpload";
+import TextInputs from "./TextInputs";
+import ImageUpload from "./ImageUpload";
 import { Post } from "@/src/atoms/postsAtom";
 import { User } from "firebase/auth";
 import { useRouter } from "next/router";

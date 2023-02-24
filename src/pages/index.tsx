@@ -6,7 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Post, PostVote } from "../atoms/postsAtom";
 import CreatePostLink from "../components/community/CreatePostLink";
 import PageContent from "../components/layout/PageContent";
-import PostItem from "../components/posts/PostItem";
+import PostItem from "../components/posts/postItem/PostItem";
 import PostLoader from "../components/posts/PostLoader";
 import { auth, firestore } from "../firebase/clientApp";
 import useCommunityData from "../hooks/useCommunityData";

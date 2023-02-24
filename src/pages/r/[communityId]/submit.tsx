@@ -1,6 +1,6 @@
 import About from "@/src/components/community/About";
 import PageContent from "@/src/components/layout/PageContent";
-import NewPostForm from "@/src/components/posts/NewPostForm";
+import NewPostForm from "@/src/components/posts/postForm/NewPostForm";
 import { auth } from "@/src/firebase/clientApp";
 import useCommunityData from "@/src/hooks/useCommunityData";
 import { Box, Text } from "@chakra-ui/react";
