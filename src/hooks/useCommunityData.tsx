@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { authModalState } from "../atoms/authModalAtoms";
+import { authModalState } from "../atoms/authModalAtom";
 import { Community, CommunitySnippet, communityState, defaultCommunity } from "../atoms/communitiesAtom";
 import { auth, firestore } from "../firebase/clientApp";
 import { getMySnippets } from "../helpers/firestore";

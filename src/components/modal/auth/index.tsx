@@ -8,7 +8,7 @@ import {
     ModalHeader,
 } from "@chakra-ui/react";
 import { useRecoilState } from "recoil";
-import { authModalState } from "@/src/atoms/authModalAtoms";
+import { authModalState } from "@/src/atoms/authModalAtom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/src/firebase/clientApp";
 import ResetPassword from "@/src/components/modal/auth/ResetPassword";

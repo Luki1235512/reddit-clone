@@ -7,7 +7,7 @@ import { collection, doc, getDocs, increment, orderBy, query, serverTimestamp, T
 import { useCallback, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import CommentItem, { Comment } from "./CommentItem";
-import { authModalState } from "@/src/atoms/authModalAtoms";
+import { authModalState } from "@/src/atoms/authModalAtom";
 
 type CommentsProps = {
     user?: User | null,

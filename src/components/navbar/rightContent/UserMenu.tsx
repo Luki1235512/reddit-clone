@@ -8,9 +8,9 @@ import { IoSparkles } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLogin } from "react-icons/md";
 import { auth } from "@/src/firebase/clientApp";
-import { useResetRecoilState, useSetRecoilState } from "recoil";
-import { authModalState } from "@/src/atoms/authModalAtoms";
-import { communityState } from "@/src/atoms/communitiesAtom";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "@/src/atoms/authModalAtom";
+
 
 type UserMenuProps = {
     user?: User | null;

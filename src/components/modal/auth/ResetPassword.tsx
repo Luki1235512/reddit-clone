@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { authModalState } from "@/src/atoms/authModalAtoms";
+import { authModalState } from "@/src/atoms/authModalAtom";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import { auth } from "@/src/firebase/clientApp";
 import { Button, Flex, Icon, Input, Text } from "@chakra-ui/react";
