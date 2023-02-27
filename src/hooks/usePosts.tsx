@@ -16,7 +16,7 @@ const usePosts = (communityData?: Community) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter();
-    const communnityStateValue = useRecoilValue(communityState);
+    const communityStateValue = useRecoilValue(communityState);
     
     const onSelectPost = (post: Post, postIdx: number) => {
         setPostStateValue(prev => ({
@@ -176,11 +176,11 @@ const usePosts = (communityData?: Community) => {
     };
 
     useEffect(() => {
-        if (!user?.uid || !communnityStateValue.currentCommunity) {
+        if (!user?.uid || !communityStateValue.currentCommunity) {
             return;
         }
-        getCommunityPostVotes(communnityStateValue.currentCommunity.id);
-    }, [user, communnityStateValue.currentCommunity]);
+        getCommunityPostVotes(communityStateValue.currentCommunity.id);
+    }, [user, communityStateValue.currentCommunity]);
 
     useEffect(() => {
         if (!user?.uid && !loadingUser) {

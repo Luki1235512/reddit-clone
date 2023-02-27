@@ -28,7 +28,11 @@ const CreateCommunityPostPage: NextPage = () => {
                 <Box p="14px 0px" borderBottom="1px solid" borderColor="white">
                     <Text fontWeight={600}>Create a post</Text>
                 </Box>
-                {user && <NewPostForm user={user} communityImageURL={communityStateValue.currentCommunity.imageURL} communityId={communityStateValue.currentCommunity.id} />}
+                {user && <NewPostForm
+                    user={user} 
+                    communityImageURL={communityStateValue.currentCommunity.imageURL} 
+                    communityId={communityStateValue.currentCommunity.id} 
+                />}
             </>
             {communityStateValue.currentCommunity && (
                 <>

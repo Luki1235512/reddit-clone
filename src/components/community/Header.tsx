@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({communityData}) => {
                   borderRadius="full"
                   boxSize="66px"
                   src={communityStateValue.currentCommunity.imageURL}
-                  alt="Dan Abramov"
+                  alt="Community Image"
                   position="relative"
                   top={-3}
                   color="blue.500"

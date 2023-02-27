@@ -1,12 +1,11 @@
 import { Community } from "@/src/atoms/communitiesAtom"
 import { Post } from "@/src/atoms/postsAtom";
-import { auth, firestore } from "@/src/firebase/clientApp";
+import { firestore } from "@/src/firebase/clientApp";
 import usePosts from "@/src/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import PostItem from "./postItem";
 import PostLoader from "./Loader";
 
