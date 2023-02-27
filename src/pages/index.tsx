@@ -12,6 +12,7 @@ import usePosts from "../hooks/usePosts";
 import { useRecoilValue } from "recoil";
 import { communityState } from "../atoms/communitiesAtom";
 import PageContentLayout from "../components/layout/PageContent";
+import Recommendations from "../components/community/Recommendations";
 
 const Home: NextPage = () => {
   const [user, loadingUser] = useAuthState(auth)
@@ -178,7 +179,7 @@ const Home: NextPage = () => {
         )}
       </>
       <Stack spacing={5} position="sticky" top="14px">
-
+        <Recommendations />
       </Stack>
     </PageContentLayout>
   );
