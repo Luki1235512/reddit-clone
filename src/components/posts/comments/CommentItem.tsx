@@ -16,14 +16,14 @@ export type Comment = {
     createdAt?: Timestamp;
 };
 
-type CommentItemPorps = {
+type CommentItemProps = {
     comment: Comment;
     onDeleteComment: (comment: Comment) => void;
     isLoading: boolean;
     userId?: string;
 };
 
-const CommentItem: React.FC<CommentItemPorps> = ({comment, onDeleteComment, isLoading, userId}) => {
+const CommentItem: React.FC<CommentItemProps> = ({comment, onDeleteComment, isLoading, userId}) => {
     return (
         <Flex>
           <Box mr={2}>

@@ -1,6 +1,6 @@
 import { Post, postState } from "@/src/atoms/postsAtom";
 import { firestore } from "@/src/firebase/clientApp";
-import CommentInput from "@/src/components/posts/comments/CommentInput";
+import CommentInput from "@/src/components/posts/comments/Input";
 import { Box, Flex, SkeletonCircle, SkeletonText, Stack, Text } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { collection, doc, getDocs, increment, orderBy, query, serverTimestamp, Timestamp, where, writeBatch } from "firebase/firestore";
@@ -10,9 +10,9 @@ import CommentItem, { Comment } from "./CommentItem";
 import { authModalState } from "@/src/atoms/authModalAtom";
 
 type CommentsProps = {
-    user?: User | null,
-    selectedPost: Post,
-    community: string
+    user?: User | null;
+    selectedPost: Post;
+    community: string;
 };
 
 const Comments: React.FC<CommentsProps> = ({user, selectedPost, community}) => {
