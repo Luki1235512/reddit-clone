@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import { FaReddit } from "react-icons/fa";
 import { useRecoilState, useRecoilValue } from "recoil"
 import { communityState } from "../atoms/communitiesAtom";
-import { defaultMenuItem, DirectoryMenuItem, DirectoryMenuState } from "../atoms/directoryMenuAtom";
+import { defaultMenuItem, DirectoryMenuItem, directoryMenuState } from "../atoms/directoryMenuAtom";
 
 const useDirectory = () => {
-    const [directoryState, setDirectoryState] = useRecoilState(DirectoryMenuState);
+    const [directoryState, setDirectoryState] = useRecoilState(directoryMenuState);
     const router = useRouter();
 
     const communityStateValue = useRecoilValue(communityState);

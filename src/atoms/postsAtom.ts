@@ -12,8 +12,8 @@ export type Post = {
     numberOfComments: number;
     voteStatus: number;
     currentUserVoteStatus?: {
-        id: string,
-        voteValue: number
+        id: string;
+        voteValue: number;
     };
     imageURL?: string;
     postIdx?: number;
@@ -38,7 +38,7 @@ interface PostState {
     postUpdateRequired: boolean;
 };
 
-const defaultPostState: PostState = {
+export const defaultPostState: PostState = {
     selectedPost: null,
     posts: [],
     postVotes: [],
