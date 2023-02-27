@@ -10,7 +10,7 @@ const ActionIcons: React.FC = () => {
     const {toggleMenuOpen} = useDirectory();
 
     return (
-        <Flex>
+        <Flex alignItems="center" flexGrow={1}>
             <Box
                 display={{base: "none", md: "flex"}}
                 alignItems="center" 
@@ -71,7 +71,7 @@ const ActionIcons: React.FC = () => {
                 </Flex>
                 <Flex 
                     display={{base: "none", md: "flex"}}
-                    mr={1.5} 
+                    mr={3} 
                     ml={1.5} 
                     padding={1} 
                     cursor="pointer" 
