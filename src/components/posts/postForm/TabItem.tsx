@@ -24,7 +24,7 @@ const TabItem: React.FC<TabItemProps> = ({item, selected, setSelectedTab}) => {
             onClick={() => setSelectedTab(item.title)}
         >
             <Flex align="center" height="20px" mr={2}>
-                <Icon as={item.icon} />
+                <Icon as={item.icon} height="100%" fontSize={18} />
             </Flex>
             <Text fontSize="10pt">{item.title}</Text>
         </Flex>
