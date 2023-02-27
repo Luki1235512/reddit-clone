@@ -2,7 +2,7 @@ import useDirectory from "@/src/hooks/useDirectory";
 import { Flex, Icon, Image, MenuItem } from "@chakra-ui/react";
 import { IconType } from "react-icons";
 
-type MenuListItemProps = {
+type DirectoryItemProps = {
     displayText: string;
     link: string;
     icon: IconType;
@@ -10,7 +10,7 @@ type MenuListItemProps = {
     imageURL?: string;
 };
 
-const MenuListItem: React.FC<MenuListItemProps> = ({
+const MenuListItem: React.FC<DirectoryItemProps> = ({
     displayText,
     link,
     icon,
