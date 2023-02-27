@@ -80,7 +80,7 @@ const Home: NextPage = () => {
     setLoading(false);
   };
 
-  const getNoUserHomePost = async () => {
+  const getNoUserHomePosts = async () => {
     setLoading(true);
     try {
       const postQuery = query(
@@ -135,7 +135,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (!user && !loadingUser) {
-      getNoUserHomePost();
+      getNoUserHomePosts();
     }
   }, [user, loadingUser]);
 

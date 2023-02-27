@@ -6,19 +6,21 @@ import { auth } from "@/src/firebase/clientApp";
 import useCommunityData from "@/src/hooks/useCommunityData";
 import { Box, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilValue } from "recoil";
 
 const CreateCommunityPostPage: NextPage = () => {
     const [user, loadingUser, error] = useAuthState(auth);
+    const router = useRouter();
+    const {community} = router.query;
     const communityStateValue = useRecoilValue(communityState);
     const {loading} = useCommunityData();
 
     useEffect(() => {
         if (!user && !loadingUser && communityStateValue.currentCommunity.id) {
-            router.push(`/r${communityStateValue.currentCommunity.id}`);
+            router.push(`/r/${communityStateValue.currentCommunity.id}`);
         }
     }, [user, loadingUser, communityStateValue.currentCommunity]);
 

@@ -54,6 +54,8 @@ const CommunityPage: NextPage<CommunityPageProps> = ({communityData}) => {
     );
 };
 
+export default CommunityPage;
+
 export async function getServerSideProps(context: GetServerSidePropsContext) {
     // GET COMMUNITY DATA AND PASS IT TO CLIENT
     try {
@@ -73,5 +75,3 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         console.log("getServerSideProps error", error);
     }
 };
-
-export default CommunityPage;

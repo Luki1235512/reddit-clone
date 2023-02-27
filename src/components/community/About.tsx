@@ -61,7 +61,7 @@ const About: React.FC<AboutProps> = ({
                 imageURL: downloadURL,
             });
 
-            setCommunityStateValue(prev => ({
+            setCommunityStateValue((prev) => ({
                 ...prev,
                 currentCommunity: {
                     ...prev.currentCommunity,
