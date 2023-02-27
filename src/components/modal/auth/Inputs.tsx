@@ -14,7 +14,7 @@ const AuthInputs: React.FC<AuthInputsProps> = ({toggleView}) => {
     const modalState = useRecoilValue(authModalState);
 
     return (
-        <Flex direction="column" align="center" width="100%" mt={4}>
+        <Flex direction="column" alignItems="center" width="100%" mt={4}>
             {modalState.view === "login" ? (
                 <Login toggleView={toggleView} />
             ) : (

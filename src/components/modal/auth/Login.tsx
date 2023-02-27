@@ -68,7 +68,7 @@ const Login: React.FC<LoginProps> = ({toggleView}) => {
             </Button>
             <Flex justifyContent="center" mb={2}>
                 <Text fontSize="9pt" mr={1}>
-                    Forgot your passowrd?
+                    Forgot your password?
                 </Text>
                 <Text
                     fontSize="9pt"
@@ -87,7 +87,7 @@ const Login: React.FC<LoginProps> = ({toggleView}) => {
                     cursor="pointer"
                     onClick={() => toggleView("signup")}
                 >
-                    SING IN
+                    SIGN IN
                 </Text>
             </Flex>
         </form>

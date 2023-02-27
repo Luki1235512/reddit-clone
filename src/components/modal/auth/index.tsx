@@ -7,7 +7,7 @@ import {
     ModalCloseButton,
     ModalHeader,
 } from "@chakra-ui/react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { authModalState } from "@/src/atoms/authModalAtom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/src/firebase/clientApp";
@@ -23,7 +23,7 @@ const AuthModal: React.FC = () => {
             open: false,
         }));
 
-    const currentUser = useRecoilState(userState);
+    const currentUser = useRecoilValue(userState);
     const [user, error] = useAuthState(auth);
 
     const toggleView = (view: string) => {
