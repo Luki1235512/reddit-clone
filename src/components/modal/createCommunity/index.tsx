@@ -1,10 +1,9 @@
-import { Box, Button, Divider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Input, Stack, Checkbox, Flex, Icon } from "@chakra-ui/react";
+import { Box, Button, Divider, ModalBody, ModalCloseButton, ModalFooter, ModalHeader, Text, Input, Stack, Checkbox, Flex, Icon } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
-import { firestore, auth } from "@/src/firebase/clientApp";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { firestore } from "@/src/firebase/clientApp";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import { communityState } from "@/src/atoms/communitiesAtom";
