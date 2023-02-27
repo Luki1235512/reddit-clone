@@ -9,13 +9,13 @@ import { useEffect, useState } from "react";
 import PostItem from "./postItem";
 import PostLoader from "./Loader";
 
-type PostProps = {
+type PostsProps = {
     communityData?: Community;
     userId?: string;
     loadingUser: boolean;
 };
 
-const Posts: React.FC<PostProps> = ({communityData, userId, loadingUser}) => {
+const Posts: React.FC<PostsProps> = ({communityData, userId, loadingUser}) => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const {postStateValue, setPostStateValue, onVote, onDeletePost} = usePosts(communityData!);
@@ -43,12 +43,12 @@ const Posts: React.FC<PostProps> = ({communityData, userId, loadingUser}) => {
     const getPosts = async () => {
         setLoading(true);
         try {
-            const postQuery = query(
+            const postsQuery = query(
                 collection(firestore, "posts"),
                 where("communityId", "==", communityData?.id!),
                 orderBy("createdAt", "desc")
             );
-            const postDocs = await getDocs(postQuery);
+            const postDocs = await getDocs(postsQuery);
             const posts = postDocs.docs.map(doc => ({id: doc.id, ...doc.data()}));
             setPostStateValue(prev => ({
                 ...prev,

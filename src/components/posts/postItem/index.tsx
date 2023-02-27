@@ -10,7 +10,7 @@ import { FaReddit } from "react-icons/fa";
 import Link from "next/link";
 
 
-type PostItemContentProps = {
+export type PostItemContentProps = {
     post: Post;
     onVote: (
         event: React.MouseEvent<SVGElement, MouseEvent>,
