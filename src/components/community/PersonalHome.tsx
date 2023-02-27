@@ -31,10 +31,12 @@ const PersonalHome: React.FC = () => {
                 </Flex>
                 <Stack spacing={3}>
                     <Text fontSize="9pt">
-                        Your presonal Reddit frontpage, built for you.
+                        Your personal Reddit frontpage, built for you.
                     </Text>
                     <Button height="30px">Create Post</Button>
-                    <Button variant="outline" height="30px">Create Community</Button>
+                    <Button variant="outline" height="30px">
+                        Create Community
+                    </Button>
                 </Stack>
             </Flex>
         </Flex>
