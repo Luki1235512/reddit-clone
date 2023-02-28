@@ -7,9 +7,9 @@ import React, { useEffect, useState } from "react";
 import { FaReddit } from "react-icons/fa";
 import Link from "next/link";
 
-type REcommendationsProps = {};
+type RecommendationsProps = {};
 
-const Recommendations: React.FC<REcommendationsProps> = () => {
+const Recommendations: React.FC<RecommendationsProps> = () => {
     const [communities, setCommunities] = useState<Community[]>([]);
     const [loading, setLoading] = useState(false);
     const {communityStateValue, onJoinLeaveCommunity} = useCommunityData();

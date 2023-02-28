@@ -26,28 +26,30 @@ const CreateCommunityPostPage: NextPage = () => {
 
     return (
         <PageContentLayout maxWidth="1060px">
-            <>
-                <Box p="14px 0px" borderBottom="1px solid" borderColor="white">
-                    <Text fontWeight={600}>Create a post</Text>
-                </Box>
-                {user && <NewPostForm
-                    user={user} 
-                    communityImageURL={communityStateValue.currentCommunity.imageURL} 
-                    communityId={communityStateValue.currentCommunity.id} 
-                />}
-            </>
-            {communityStateValue.currentCommunity && (
-                <>
-                    <About
-                        communityData={communityStateValue.currentCommunity}
-                        pt={6}
-                        onCreatePage
-                        loading={loading}
-                    />
-                </>
+          <>
+            <Box p="14px 0px" borderBottom="1px solid" borderColor="white">
+              <Text fontWeight={600}>Create a post</Text>
+            </Box>
+            {user && (
+              <NewPostForm
+                communityId={communityStateValue.currentCommunity.id}
+                communityImageURL={communityStateValue.currentCommunity.imageURL}
+                user={user}
+              />
             )}
+          </>
+          {communityStateValue.currentCommunity && (
+            <>
+              <About
+                communityData={communityStateValue.currentCommunity}
+                pt={6}
+                onCreatePage
+                loading={loading}
+              />
+            </>
+          )}
         </PageContentLayout>
-    )
+      );
 };
 
 export default CreateCommunityPostPage;

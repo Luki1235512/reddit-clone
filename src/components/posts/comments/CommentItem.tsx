@@ -9,7 +9,7 @@ export type Comment = {
     id?: string;
     creatorId: string;
     creatorDisplayText: string;
-    creatorPhotoURL: string
+    creatorPhotoURL: string;
     communityId: string;
     postId: string;
     postTitle: string;

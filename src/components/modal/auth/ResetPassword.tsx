@@ -49,13 +49,13 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({toggleView}) => {
                             _hover={{
                                 bg: "white",
                                 border: "1px solid",
-                                borderColor: "blue.500"
+                                borderColor: "blue.500",
                             }}
                             _focus={{
                                 outline: "none",
                                 bg: "white",
                                 border: "1px solid",
-                                borderColor: "blue.500"
+                                borderColor: "blue.500",
                             }}
                             bg="gray.50"
                         />
@@ -85,7 +85,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({toggleView}) => {
                 <Text
                     onClick={() => setAuthModalState((prev) => ({
                         ...prev,
-                        view: "login"
+                        view: "login",
                     }))}
                 >
                     LOGIN
@@ -94,7 +94,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({toggleView}) => {
                 <Text
                     onClick={() => setAuthModalState((prev) => ({
                         ...prev,
-                        view: "signup"
+                        view: "signup",
                     }))}
                 >
                 SIGN UP

@@ -37,7 +37,7 @@ const SignUp: React.FC<SignUpProps> = ({toggleView}) => {
 
     const onChange = ({target: {name, value},}: React.ChangeEvent<HTMLInputElement>) => {
         // UPDATE FORM STATE
-        setForm(prev => ({
+        setForm((prev) => ({
             ...prev,
             [name]: value,
         }));

@@ -5,7 +5,7 @@ interface PageContentLayoutProps {
     maxWidth?: string;
 }
 
-const PageContentLayout: React.FC<PageContentLayoutProps> = ({children, maxWidth}) => {
+const PageContentLayout: React.FC<PageContentLayoutProps> = ({children, maxWidth,}) => {
     return (
         <Flex justify="center" p="16px 0px">
           <Flex width="95%" justify="center" maxWidth={maxWidth || "860px"}>

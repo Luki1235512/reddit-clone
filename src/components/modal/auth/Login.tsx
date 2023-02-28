@@ -85,7 +85,7 @@ const Login: React.FC<LoginProps> = ({toggleView}) => {
                     cursor="pointer"
                     onClick={() => toggleView("signup")}
                 >
-                    SIGN IN
+                    SIGN UP
                 </Text>
             </Flex>
         </form>
