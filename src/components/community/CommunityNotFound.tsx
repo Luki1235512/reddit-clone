@@ -1,5 +1,6 @@
-import { Button, Flex } from "@chakra-ui/react"
-import Link from "next/link"
+import React from "react";
+import { Button, Flex } from "@chakra-ui/react";
+import Link from "next/link";
 
 const CommunityNotFound: React.FC = () => {
     return (

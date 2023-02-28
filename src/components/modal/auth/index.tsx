@@ -15,7 +15,9 @@ import ResetPassword from "@/src/components/modal/auth/ResetPassword";
 import { userState } from "@/src/atoms/userAtom";
 import ModalWrapper from "../ModalWrapper";
 
-const AuthModal: React.FC = () => {
+type AuthModalProps = {};
+
+const AuthModal: React.FC<AuthModalProps> = () => {
     const [modalState, setModalState] = useRecoilState(authModalState);
     const handleClose = () => 
         setModalState((prev) => ({
@@ -34,9 +36,7 @@ const AuthModal: React.FC = () => {
     };
 
     useEffect(() => {
-        if (user) {
-            handleClose();
-        }
+        if (user) handleClose();
     }, [user]);
 
     return (

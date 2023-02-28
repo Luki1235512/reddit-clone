@@ -4,7 +4,7 @@ import { Box, Button, Divider, Flex, Icon, Spinner, Stack, Text, Image, Skeleton
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { RiCakeLine } from "react-icons/ri";
@@ -24,7 +24,7 @@ const About: React.FC<AboutProps> = ({
     communityData,
     pt,
     onCreatePage,
-    loading
+    loading,
 }) => {
     const [user] = useAuthState(auth);
     const router = useRouter();
@@ -49,9 +49,7 @@ const About: React.FC<AboutProps> = ({
     };
 
     const updateImage = async () => {
-        if (!selectedFile) {
-            return;
-        }
+        if (!selectedFile) return;
         setImageLoading(true);
         try {
             const imageRef = ref(storage, `communities/${communityData.id}/image`);
@@ -65,12 +63,12 @@ const About: React.FC<AboutProps> = ({
                 ...prev,
                 currentCommunity: {
                     ...prev.currentCommunity,
-                    imageURL: downloadURL
+                    imageURL: downloadURL,
                 },
             }));
         }
         catch (error: any) {
-            console.log("onUpdateImage error", error.message);
+            console.log("updateImage error", error.message);
         }
         setImageLoading(false);
     };

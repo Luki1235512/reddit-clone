@@ -1,7 +1,7 @@
 import { deleteObject, ref } from "@firebase/storage";
 import { collection, deleteDoc, doc, getDocs, query, where, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { authModalState } from "../atoms/authModalAtom";
@@ -19,7 +19,7 @@ const usePosts = (communityData?: Community) => {
     const communityStateValue = useRecoilValue(communityState);
     
     const onSelectPost = (post: Post, postIdx: number) => {
-        setPostStateValue(prev => ({
+        setPostStateValue((prev) => ({
             ...prev,
             selectedPost: {...post, postIdx},
         }));
@@ -39,7 +39,7 @@ const usePosts = (communityData?: Community) => {
         }
 
         const {voteStatus} = post;
-        const existingVote = postStateValue.postVotes.find(vote => vote.postId === post.id);
+        const existingVote = postStateValue.postVotes.find((vote) => vote.postId === post.id);
 
         try {
             let voteChange = vote;
@@ -72,7 +72,7 @@ const usePosts = (communityData?: Community) => {
                 if (existingVote.voteValue === vote) {
                     voteChange *= -1;
                     updatedPost.voteStatus = voteStatus - vote;
-                    updatedPostVotes = updatedPostVotes.filter(vote => vote.id !== existingVote.id);
+                    updatedPostVotes = updatedPostVotes.filter((vote) => vote.id !== existingVote.id);
                     batch.delete(postVoteRef);
                 }
                 // FLIPPING THEIR VOTE (UP => DOWN OR DOWN => UP)
@@ -80,23 +80,23 @@ const usePosts = (communityData?: Community) => {
                     // ADD/SUBTRACT 2 TO/FROM post.voteStatus
                     voteChange = 2 * vote;
                     updatedPost.voteStatus = voteStatus + 2 * vote;
-                    const voteIdx = postStateValue.postVotes.findIndex(vote => vote.id === existingVote.id);
+                    const voteIdx = postStateValue.postVotes.findIndex((vote) => vote.id === existingVote.id);
 
                     if (voteIdx !== -1) {
                         updatedPostVotes[voteIdx] = {
                             ...existingVote,
-                            voteValue: vote
+                            voteValue: vote,
                         };
                     }
                     batch.update(postVoteRef, {
-                        voteValue: vote
+                        voteValue: vote,
                     });
                 }
             }
 
             let updatedState = {...postStateValue, postVotes: updatedPostVotes};
 
-            const postIdx = postStateValue.posts.findIndex(item => item.id === post.id);
+            const postIdx = postStateValue.posts.findIndex((item) => item.id === post.id);
 
             updatedPosts[postIdx!] = updatedPost;
             updatedState = {
@@ -105,13 +105,13 @@ const usePosts = (communityData?: Community) => {
                 postsCache: {
                     ...updatedState.postsCache,
                     [communityId]: updatedPosts,
-                }
+                },
             };
 
             if (updatedState.selectedPost) {
                 updatedState = {
                     ...updatedState,
-                    selectedPost: updatedPost
+                    selectedPost: updatedPost,
                 };
             }
 
@@ -139,15 +139,15 @@ const usePosts = (communityData?: Community) => {
             await deleteDoc(postDocRef);
 
             // UPDATE RECOIL STATE
-            setPostStateValue(prev => ({
+            setPostStateValue((prev) => ({
                 ...prev,
-                posts: prev.posts.filter(item => item.id !== post.id),
+                posts: prev.posts.filter((item) => item.id !== post.id),
                 postsCache: {
                     ...prev.postsCache,
                     [post.communityId]: prev.postsCache[post.communityId]?.filter(
-                        item => item.id !== post.id
-                    )
-                }
+                        (item) => item.id !== post.id
+                    ),
+                },
             }));
 
             return true;
@@ -165,26 +165,24 @@ const usePosts = (communityData?: Community) => {
         );
 
         const postVoteDocs = await getDocs(postVotesQuery);
-        const postVotes = postVoteDocs.docs.map(doc => ({
+        const postVotes = postVoteDocs.docs.map((doc) => ({
             id: doc.id,
-            ...doc.data()
+            ...doc.data(),
         }));
-        setPostStateValue(prev => ({
+        setPostStateValue((prev) => ({
             ...prev,
-            postVotes: postVotes as PostVote[]
+            postVotes: postVotes as PostVote[],
         }));
     };
 
     useEffect(() => {
-        if (!user?.uid || !communityStateValue.currentCommunity) {
-            return;
-        }
+        if (!user?.uid || !communityStateValue.currentCommunity) return;
         getCommunityPostVotes(communityStateValue.currentCommunity.id);
     }, [user, communityStateValue.currentCommunity]);
 
     useEffect(() => {
         if (!user?.uid && !loadingUser) {
-            setPostStateValue(prev => ({
+            setPostStateValue((prev) => ({
                 ...prev,
                 postVotes: [],
             }));

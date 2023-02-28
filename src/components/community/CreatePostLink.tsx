@@ -1,3 +1,4 @@
+import React from "react";
 import useDirectory from "@/src/hooks/useDirectory";
 import { Flex, Icon, Input } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -5,7 +6,9 @@ import { BsLink45Deg } from "react-icons/bs";
 import { FaReddit } from "react-icons/fa";
 import { IoImageOutline } from "react-icons/io5";
 
-const CreatePostLink: React.FC = () => {
+type CreatePostProps = {};
+
+const CreatePostLink: React.FC<CreatePostProps> = () => {
     const router = useRouter();
     const {toggleMenuOpen} = useDirectory();
 

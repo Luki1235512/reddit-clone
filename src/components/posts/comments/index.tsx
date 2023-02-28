@@ -3,8 +3,8 @@ import { firestore } from "@/src/firebase/clientApp";
 import CommentInput from "@/src/components/posts/comments/Input";
 import { Box, Flex, SkeletonCircle, SkeletonText, Stack, Text } from "@chakra-ui/react";
 import { User } from "firebase/auth";
-import { collection, doc, getDocs, increment, orderBy, query, serverTimestamp, Timestamp, where, writeBatch } from "firebase/firestore";
-import { useCallback, useEffect, useState } from "react";
+import { collection, doc, getDocs, increment, orderBy, query, serverTimestamp, where, writeBatch } from "firebase/firestore";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import CommentItem, { Comment } from "./CommentItem";
 import { authModalState } from "@/src/atoms/authModalAtom";
@@ -56,7 +56,7 @@ const Comments: React.FC<CommentsProps> = ({user, selectedPost, community}) => {
 
               setComment("")
               const {id: postId, title} = selectedPost;
-              setComments(prev => [{
+              setComments((prev) => [{
                 id: commentDocRef.id,
                 creatorId: user.uid,
                 creatorDisplayText: user.email!.split("@")[0],
@@ -69,10 +69,10 @@ const Comments: React.FC<CommentsProps> = ({user, selectedPost, community}) => {
                     seconds: Date.now() / 1000,
                 },
               } as Comment, 
-              ...prev
+              ...prev,
             ]);
 
-            setPostState(prev => ({
+            setPostState((prev) => ({
                 ...prev,
                 selectedPost: {
                     ...prev.selectedPost,
@@ -90,20 +90,18 @@ const Comments: React.FC<CommentsProps> = ({user, selectedPost, community}) => {
     const onDeleteComment = useCallback(async (comment: Comment) => {
         setDeleteLoading(comment.id as string);
         try {
-            if (!comment.id) {
-                throw "Comment has no ID";
-            }
+            if (!comment.id) throw "Comment has no ID";
             const batch = writeBatch(firestore);
             const commentDocRef = doc(firestore, "comments", comment.id);
             batch.delete(commentDocRef);
 
             batch.update(doc(firestore, "posts", comment.postId), {
-                numberOfComments: increment(-1)
+                numberOfComments: increment(-1),
             });
 
             await batch.commit();
 
-            setPostState(prev => ({
+            setPostState((prev) => ({
                 ...prev,
                 selectedPost: {
                     ...prev.selectedPost,
@@ -112,7 +110,7 @@ const Comments: React.FC<CommentsProps> = ({user, selectedPost, community}) => {
                 postUpdateRequired: true,
             }));
 
-            setComments(prev => prev.filter(item => item.id !== comment.id));
+            setComments((prev) => prev.filter((item) => item.id !== comment.id));
         }
         catch (error: any) {
             console.log("onDeleteError error", error.message);
@@ -127,7 +125,7 @@ const Comments: React.FC<CommentsProps> = ({user, selectedPost, community}) => {
                 where("postId", "==", selectedPost.id),
                 orderBy("createdAt", "desc"));
             const commentDocs = await getDocs(commentsQuery)
-            const comments = commentDocs.docs.map(doc => ({
+            const comments = commentDocs.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));

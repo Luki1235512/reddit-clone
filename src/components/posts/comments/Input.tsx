@@ -1,3 +1,4 @@
+import React from "react";
 import AuthButtons from "@/src/components/navbar/rightContent/AuthButtons";
 import { Button, Flex, Text, Textarea } from "@chakra-ui/react";
 import { User } from "firebase/auth";

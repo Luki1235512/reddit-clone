@@ -10,7 +10,7 @@ import InputItem from "../../layout/InputItem";
 
 type SignUpProps = {
     toggleView: (view: ModalView) => void;
-}
+};
 
 const SignUp: React.FC<SignUpProps> = ({toggleView}) => {
     const [form, setForm] = useState({
@@ -24,9 +24,7 @@ const SignUp: React.FC<SignUpProps> = ({toggleView}) => {
     // FIREBASE LOGIC
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (formError) {
-            setFormError("");
-        }
+        if (formError) setFormError("");
         if (!form.email.includes("@")) {
             return setFormError("Please enter a valid email");
         }

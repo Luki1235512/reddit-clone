@@ -4,7 +4,7 @@ import moment from "moment";
 import { BsChat, BsDot } from "react-icons/bs";
 import { IoArrowDownCircleOutline, IoArrowDownCircleSharp, IoArrowRedoOutline, IoArrowUpCircleOutline, IoArrowUpCircleSharp, IoBookmarkOutline } from "react-icons/io5";
 import { AiOutlineDelete } from "react-icons/ai";
-import { useState } from "react";
+import React, { useState } from "react";
 import { NextRouter } from "next/router";
 import { FaReddit } from "react-icons/fa";
 import Link from "next/link";
@@ -49,15 +49,11 @@ const PostItem: React.FC<PostItemContentProps> = ({
         try {
             const success = await onDeletePost(post);
 
-            if (!success) {
-                throw new Error("Failed to delete post");
-            }
+            if (!success) throw new Error("Failed to delete post");
 
             console.log("Post was succesfully deleted");
 
-            if (router) {
-                router.back();
-            }
+            if (router) router.back();
         }
         catch (error: any) {
             console.log("Error deleting post", error.message);

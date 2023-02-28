@@ -1,3 +1,4 @@
+import React from "react";
 import { Box, Flex, Icon, Spinner, Stack, Text } from "@chakra-ui/react";
 import { Timestamp } from "firebase/firestore";
 import moment from "moment";

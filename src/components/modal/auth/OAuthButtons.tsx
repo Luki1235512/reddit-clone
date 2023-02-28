@@ -5,7 +5,9 @@ import { auth, firestore } from "@/src/firebase/clientApp";
 import { doc, setDoc } from "firebase/firestore";
 import { User } from "firebase/auth";
 
-const OAuthButtons: React.FC = () => {
+type OAuthButtonsProps = {};
+
+const OAuthButtons: React.FC<OAuthButtonsProps> = () => {
     const [signInWithGoogle, userCred, loading, error] = useSignInWithGoogle(auth);
 
     // DONT TOUCH FOR NOW

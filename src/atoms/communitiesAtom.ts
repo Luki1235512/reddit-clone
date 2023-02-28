@@ -8,7 +8,7 @@ export interface Community {
     privacyType: "public" | "restricted" | "private";
     createdAt?: Timestamp;
     imageURL?: string;
-};
+}
 
 export interface CommunitySnippet {
     communityId: string;
@@ -47,5 +47,5 @@ export const defaultCommunityState: CommunityState = {
 
 export const communityState = atom<CommunityState>({
     key: "communitiesState",
-    default: defaultCommunityState
+    default: defaultCommunityState,
 });

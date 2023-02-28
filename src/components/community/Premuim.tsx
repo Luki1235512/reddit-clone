@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, Flex, Icon, Stack, Text } from "@chakra-ui/react";
 import { GiCheckedShield } from "react-icons/gi";
 

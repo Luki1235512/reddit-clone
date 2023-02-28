@@ -1,4 +1,5 @@
-import { Community } from "@/src/atoms/communitiesAtom"
+import React from "react";
+import { Community } from "@/src/atoms/communitiesAtom";
 import useCommunityData from "@/src/hooks/useCommunityData";
 import { Box, Button, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import { FaReddit } from "react-icons/fa";
@@ -9,8 +10,8 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({communityData}) => {
 
-    const {communityStateValue, onJoinLeaveCommunity, loading, error} = useCommunityData(!!communityData);
-    const isJoined = !!communityStateValue.mySnippets.find(item => item.communityId === communityData.id);
+    const {communityStateValue, loading, error, onJoinLeaveCommunity} = useCommunityData(!!communityData);
+    const isJoined = !!communityStateValue.mySnippets.find((item) => item.communityId === communityData.id);
 
     return (
         <Flex direction="column" width="100%" height="146px">

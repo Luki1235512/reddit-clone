@@ -5,7 +5,7 @@ import usePosts from "@/src/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PostItem from "./postItem";
 import PostLoader from "./Loader";
 
@@ -21,7 +21,7 @@ const Posts: React.FC<PostsProps> = ({communityData, userId, loadingUser}) => {
     const {postStateValue, setPostStateValue, onVote, onDeletePost} = usePosts(communityData!);
 
     const onSelectPost = (post: Post, postIdx: number) => {
-        setPostStateValue(prev => ({
+        setPostStateValue((prev) => ({
             ...prev,
             selectedPost: {...post, postIdx},
         }));
@@ -30,7 +30,7 @@ const Posts: React.FC<PostsProps> = ({communityData, userId, loadingUser}) => {
 
     useEffect(() => {
         if (postStateValue.postsCache[communityData?.id!] && !postStateValue.postUpdateRequired) {
-            setPostStateValue(prev => ({
+            setPostStateValue((prev) => ({
                 ...prev,
                 posts: postStateValue.postsCache[communityData?.id!],
             }));
@@ -49,15 +49,15 @@ const Posts: React.FC<PostsProps> = ({communityData, userId, loadingUser}) => {
                 orderBy("createdAt", "desc")
             );
             const postDocs = await getDocs(postsQuery);
-            const posts = postDocs.docs.map(doc => ({id: doc.id, ...doc.data()}));
-            setPostStateValue(prev => ({
+            const posts = postDocs.docs.map((doc) => ({id: doc.id, ...doc.data()}));
+            setPostStateValue((prev) => ({
                 ...prev,
                 posts: posts as Post[],
                 postsCache: {
                     ...prev.postsCache,
-                    [communityData?.id!]: posts as Post[]
+                    [communityData?.id!]: posts as Post[],
                 },
-                postUpdateRequired: false
+                postUpdateRequired: false,
             }));
         }
         catch (error: any) {
@@ -76,13 +76,14 @@ const Posts: React.FC<PostsProps> = ({communityData, userId, loadingUser}) => {
                         <PostItem 
                             key={post.id}
                             post={post} 
-                            userIsCreator={userId === post.creatorId}
-                            userVoteValue={
-                                postStateValue.postVotes.find(item => item.postId === post.id)?.voteValue
-                            } 
                             onVote={onVote}
-                            onSelectPost={onSelectPost}
                             onDeletePost={onDeletePost}
+                            userVoteValue={
+                                postStateValue.postVotes.find((item) => item.postId === post.id)?.voteValue
+                            } 
+                            userIsCreator={userId === post.creatorId}
+                            onSelectPost={onSelectPost}
+                            
                         />))}
                 </Stack>
             )}

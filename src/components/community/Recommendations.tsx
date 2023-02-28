@@ -1,12 +1,15 @@
 import { Community } from "@/src/atoms/communitiesAtom";
 import { firestore } from "@/src/firebase/clientApp";
 import useCommunityData from "@/src/hooks/useCommunityData";
-import { Flex, Skeleton, SkeletonCircle, Stack, Link, Text, Image, Icon, Box, Button } from "@chakra-ui/react";
+import { Flex, Skeleton, SkeletonCircle, Stack, Text, Image, Icon, Box, Button } from "@chakra-ui/react";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaReddit } from "react-icons/fa";
+import Link from "next/link";
 
-const Recommendations: React.FC = () => {
+type REcommendationsProps = {};
+
+const Recommendations: React.FC<REcommendationsProps> = () => {
     const [communities, setCommunities] = useState<Community[]>([]);
     const [loading, setLoading] = useState(false);
     const {communityStateValue, onJoinLeaveCommunity} = useCommunityData();
@@ -20,9 +23,9 @@ const Recommendations: React.FC = () => {
                 limit(5)
             );
             const communityDocs = await getDocs(communityQuery);
-            const communities = communityDocs.docs.map(doc => ({
+            const communities = communityDocs.docs.map((doc) => ({
                 id: doc.id,
-                ...doc.data()
+                ...doc.data(),
             })) as Community[];
 
             setCommunities(communities);

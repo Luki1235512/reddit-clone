@@ -1,3 +1,4 @@
+import React from "react";
 import { authModalState } from "@/src/atoms/authModalAtom"
 import { auth } from "@/src/firebase/clientApp";
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -10,7 +11,9 @@ import { IoSparkles } from "react-icons/io5";
 import UserList from "./UserList";
 import NoUserList from "./NoUserList";
 
-const MenuWrapper: React.FC = () => {
+type MenuWrapperProps = {};
+
+const MenuWrapper: React.FC<MenuWrapperProps> = () => {
     const [authModal, setModalState] = useRecoilState(authModalState);
     const [user] = useAuthState(auth);
 

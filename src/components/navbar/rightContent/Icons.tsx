@@ -5,7 +5,9 @@ import { IoFilterCircleOutline, IoNotificationsOutline, IoVideocamOutline } from
 import { GrAdd } from "react-icons/gr";
 import useDirectory from "@/src/hooks/useDirectory";
 
-const ActionIcons: React.FC = () => {
+type ActionIconsProps = {};
+
+const ActionIcons: React.FC<ActionIconsProps> = () => {
 
     const {toggleMenuOpen} = useDirectory();
 

@@ -20,7 +20,6 @@ const Home: NextPage = () => {
   const [user, loadingUser] = useAuthState(auth)
   const {postStateValue, setPostStateValue, onVote, onSelectPost, onDeletePost, loading, setLoading} = usePosts();
   const communityStateValue = useRecoilValue(communityState);
-  console.log("SNIPPETS", communityStateValue)
 
   const getUserHomePosts = async () => {
     setLoading(true);
@@ -28,12 +27,10 @@ const Home: NextPage = () => {
       const feedPosts: Post[] = [];
 
       if (communityStateValue.mySnippets.length) {
-        const myCommunityIds = communityStateValue.mySnippets.map(snippet => snippet.communityId);
+        const myCommunityIds = communityStateValue.mySnippets.map((snippet) => snippet.communityId);
         let postPromises: Array<Promise<QuerySnapshot<DocumentData>>> = [];
-        [0, 1, 2].forEach(index => {
-          if (!myCommunityIds[index]) {
-            return;
-          }
+        [0, 1, 2].forEach((index) => {
+          if (!myCommunityIds[index]) return;
           postPromises.push(
             getDocs(
               query(
@@ -46,7 +43,7 @@ const Home: NextPage = () => {
         });
         const queryResults = await Promise.all(postPromises);
         queryResults.forEach(result => {
-          const posts = result.docs.map(doc => ({
+          const posts = result.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           })) as Post[];
@@ -62,14 +59,14 @@ const Home: NextPage = () => {
           limit(10)
         );
         const postDocs = await getDocs(postQuery);
-        const posts = postDocs.docs.map(doc => ({
+        const posts = postDocs.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         })) as Post[];
         feedPosts.push(...posts);
       }
 
-      setPostStateValue(prev => ({
+      setPostStateValue((prev) => ({
         ...prev,
         posts: feedPosts
       }))
@@ -89,12 +86,12 @@ const Home: NextPage = () => {
         limit(10)
       );
       const postDocs = await getDocs(postQuery);
-      const posts = postDocs.docs.map(doc => ({
+      const posts = postDocs.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      setPostStateValue(prev => ({
+      setPostStateValue((prev) => ({
         ...prev,
         posts: posts as Post[],
       }));
@@ -106,28 +103,26 @@ const Home: NextPage = () => {
   }
 
   const getUserPostVotes = async () => {
-    const postIds = postStateValue.posts.map(post => post.id);
+    const postIds = postStateValue.posts.map((post) => post.id);
     const postVotesQuery = query(
       collection(firestore, `users/${user?.uid}/postVotes`),
         where("postId", "in", postIds)
       );
       const unsubscribe = onSnapshot(postVotesQuery, (querySnapshot) => {
-        const postVotes = querySnapshot.docs.map(postVote => ({
+        const postVotes = querySnapshot.docs.map((postVote) => ({
           id: postVote.id,
           ...postVote.data()
         }));
-        setPostStateValue(prev => ({
+        setPostStateValue((prev) => ({
           ...prev,
           postVotes: postVotes as PostVote[],
         }));
-      })
+      });
       return () => unsubscribe();
   };
 
   useEffect(() => {
-    if (!communityStateValue.initSnippetsFetched) {
-      return;
-    }
+    if (!communityStateValue.initSnippetsFetched) return;
     if (user) {
       getUserHomePosts();
     }
@@ -140,16 +135,15 @@ const Home: NextPage = () => {
   }, [user, loadingUser]);
 
   useEffect(() => {
-    if (!user?.uid || !postStateValue.posts.length) {
-      return;
-    }
+    if (!user?.uid || !postStateValue.posts.length) return;
     getUserPostVotes();
+
     return () => {
-      setPostStateValue(prev => ({
+      setPostStateValue((prev) => ({
         ...prev,
-        postVotes: []
-      }))
-    }
+        postVotes: [],
+      }));
+    };
   }, [postStateValue.posts, user?.uid]);
 
   return (

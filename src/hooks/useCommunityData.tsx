@@ -18,9 +18,7 @@ const useCommunityData = (ssrCommunityData?: boolean) => {
 
 
     useEffect(() => {
-        if (!user || !!communityStateValue.mySnippets.length) {
-            return;
-        }
+        if (!user || !!communityStateValue.mySnippets.length) return;
         getSnippets();
     }, [user]);
 
@@ -50,7 +48,7 @@ const useCommunityData = (ssrCommunityData?: boolean) => {
                 ...prev,
                 currentCommunity: {
                     id: communityDoc.id,
-                    ...communityDoc.data()
+                    ...communityDoc.data(),
                 } as Community,
             }));
         }
@@ -96,9 +94,9 @@ const useCommunityData = (ssrCommunityData?: boolean) => {
             await batch.commit();
 
             // UPDATE RECOIL STATE - communityState.mySnippets
-            setCommunityStateValue(prev => ({
+            setCommunityStateValue((prev) => ({
                 ...prev,
-                mySnippets: [...prev.mySnippets, newSnippet]
+                mySnippets: [...prev.mySnippets, newSnippet],
             }));
         }
         catch (error: any) {
@@ -118,9 +116,9 @@ const useCommunityData = (ssrCommunityData?: boolean) => {
 
             await batch.commit();
 
-            setCommunityStateValue(prev => ({
+            setCommunityStateValue((prev) => ({
                 ...prev,
-                mySnippets: prev.mySnippets.filter(item => item.communityId !== communityId)
+                mySnippets: prev.mySnippets.filter((item) => item.communityId !== communityId),
             }));
         }
         catch (error: any) {

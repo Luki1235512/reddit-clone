@@ -8,7 +8,7 @@ import InputItem from "../../layout/InputItem";
 
 type LoginProps = {
     toggleView: (view: ModalView) => void;
-}
+};
 
 const Login: React.FC<LoginProps> = ({toggleView}) => {
     const [form, setForm] = useState({
@@ -21,9 +21,7 @@ const Login: React.FC<LoginProps> = ({toggleView}) => {
     // FIREBASE LOGIC
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (formError) {
-            setFormError("");
-        }
+        if (formError) setFormError("");
         if (!form.email.includes("@")) {
             return setFormError("Please enter a valid email");
         }
@@ -32,7 +30,7 @@ const Login: React.FC<LoginProps> = ({toggleView}) => {
 
     const onChange = ({target: {name, value},}: React.ChangeEvent<HTMLInputElement>) => {
         // UPDATE FORM STATE
-        setForm(prev => ({
+        setForm((prev) => ({
             ...prev,
             [name]: value,
         }));

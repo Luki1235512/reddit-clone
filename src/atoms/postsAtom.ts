@@ -36,7 +36,7 @@ interface PostState {
         [key: string]: Post[];
     };
     postUpdateRequired: boolean;
-};
+}
 
 export const defaultPostState: PostState = {
     selectedPost: null,

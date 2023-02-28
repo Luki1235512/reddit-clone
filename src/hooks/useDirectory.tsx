@@ -12,7 +12,7 @@ const useDirectory = () => {
     const communityStateValue = useRecoilValue(communityState);
 
     const onSelectMenuItem = (menuItem: DirectoryMenuItem) => {
-        setDirectoryState(prev => ({
+        setDirectoryState((prev) => ({
             ...prev,
             selectedMenuItem: menuItem,
         }));
@@ -24,7 +24,7 @@ const useDirectory = () => {
     };
 
     const toggleMenuOpen = () => {
-        setDirectoryState(prev => ({
+        setDirectoryState((prev) => ({
             ...prev,
             isOpen: !directoryState.isOpen,
         }));
@@ -36,7 +36,7 @@ const useDirectory = () => {
         const existingCommunity = communityStateValue.currentCommunity;
 
         if (existingCommunity.id) {
-            setDirectoryState(prev => ({
+            setDirectoryState((prev) => ({
                 ...prev,
                 selectedMenuItem: {
                     displayText: `r/${existingCommunity.id}`,
@@ -48,7 +48,7 @@ const useDirectory = () => {
             }));
             return;
         }
-        setDirectoryState(prev => ({
+        setDirectoryState((prev) => ({
             ...prev,
             selectedMenuItem: defaultMenuItem,
         }));

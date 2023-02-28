@@ -1,3 +1,4 @@
+import React from "react";
 import { AuthModalState } from "@/src/atoms/authModalAtom"
 import { Flex, Icon, MenuItem } from "@chakra-ui/react";
 import { MdOutlineLogin } from "react-icons/md";

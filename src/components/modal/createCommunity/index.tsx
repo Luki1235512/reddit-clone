@@ -25,19 +25,15 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({isOpen, hand
     const router = useRouter();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.value.length > 21) {
-            return;
-        }
+        if (event.target.value.length > 21) return;
         setName(event.target.value);
         setCharsRemaining(21 - event.target.value.length);
     };
 
     const handleCreateCommunity = async () => {
-        if (nameError) {
-            setNameError("");
-        }
-        // VALIDATE THE COMMUNITY
+        if (nameError) setNameError("");
         const format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
         if (format.test(name) || name.length < 3) {
             return setNameError("Community names must be between 3-21 characters, and canonly contain leters, numbers or underscores");
         }
@@ -48,7 +44,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({isOpen, hand
             await runTransaction(firestore, async (transaction) => {
                 const communityDoc = await transaction.get(communityDocRef);
                 if (communityDoc.exists()) {
-                    throw new Error(`Sorry, r/${name} is taken. Try another.`);
+                    throw new Error(`Sorry, /r${name} is taken. Try another.`);
                 }
 
                 transaction.set(communityDocRef, {
@@ -68,7 +64,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({isOpen, hand
             console.log("Transaction error", error);
             setNameError(error.message)
         }
-        setSnippetState(prev => ({
+        setSnippetState((prev) => ({
             ...prev,
             mySnippets: [],
         }));
@@ -81,9 +77,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({isOpen, hand
         const {
             target: {name},
         } = event;
-        if (name === communityType) {
-            return;
-        }
+        if (name === communityType) return;
         setCommunityType(name);
     };
 

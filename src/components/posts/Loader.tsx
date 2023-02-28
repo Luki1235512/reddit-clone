@@ -1,3 +1,4 @@
+import React from "react";
 import { Box, Skeleton, SkeletonText, Stack } from "@chakra-ui/react";
 
 const PostLoader: React.FC = () => {

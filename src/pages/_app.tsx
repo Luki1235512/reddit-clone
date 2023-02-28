@@ -3,6 +3,8 @@ import { ChakraProvider } from "@chakra-ui/provider";
 import { theme } from "../chakra/theme";
 import Layout from "@/src/components/layout";
 import { RecoilRoot } from "recoil";
+import "../firebase/clientApp";
+import "../styles/global";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

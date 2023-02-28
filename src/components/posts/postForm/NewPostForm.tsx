@@ -1,15 +1,15 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, CloseButton, Flex, Icon, Text } from "@chakra-ui/react";
+import { Flex, Icon } from "@chakra-ui/react";
 import { BsLink45Deg, BsMic } from "react-icons/bs";
 import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import { BiPoll } from "react-icons/bi"
 import TabItem from "./TabItem";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import TextInputs from "./TextInputs";
 import ImageUpload from "./ImageUpload";
-import { Post, postState } from "@/src/atoms/postsAtom";
+import { postState } from "@/src/atoms/postsAtom";
 import { User } from "firebase/auth";
 import { useRouter } from "next/router";
-import { addDoc, collection, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp, updateDoc } from "firebase/firestore";
 import { firestore, storage } from "@/src/firebase/clientApp";
 import { ref, uploadString, getDownloadURL } from "@firebase/storage";
 import { useSetRecoilState } from "recoil";
@@ -17,24 +17,24 @@ import { useSetRecoilState } from "recoil";
 const formTabs = [
     {
         title: "Post",
-        icon: IoDocumentText
+        icon: IoDocumentText,
     },
     {
         title: "Images & Video",
-        icon: IoImageOutline
+        icon: IoImageOutline,
     },
     {
         title: "Link",
-        icon: BsLink45Deg
+        icon: BsLink45Deg,
     },
     {
         title: "Poll",
-        icon: BiPoll
+        icon: BiPoll,
     },
     {
         title: "Talk",
-        icon: BsMic
-    }
+        icon: BsMic,
+    },
 ];
 
 export type TabItem = {
@@ -91,7 +91,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({communityId, user, communityIm
                     imageURL: downloadURL,
                 });
             }
-            setPostItems(prev => ({
+            setPostItems((prev) => ({
                 ...prev,
                 postUpdateRequired: true
             }));
@@ -118,7 +118,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({communityId, user, communityIm
     };
 
     const onTextChange = ({target: {name, value}, }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setTextInputs(prev => ({
+        setTextInputs((prev) => ({
             ...prev,
             [name]: value,
         }));

@@ -12,7 +12,9 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const PostPage: React.FC = () => {
+type PostPageProps = {};
+
+const PostPage: React.FC<PostPageProps> = () => {
     const [user] = useAuthState(auth);
     const router = useRouter();
     const {community, pid} = router.query;
@@ -32,13 +34,13 @@ const PostPage: React.FC = () => {
         try {
             const postDocRef = doc(firestore, "posts", pid as string);
             const postDoc = await getDoc(postDocRef);
-            setPostStateValue(prev => ({
+            setPostStateValue((prev) => ({
                 ...prev,
                 selectedPost: {id: postDoc.id, ...postDoc.data()} as Post
             }));
         }
         catch (error: any) {
-            console.log("fetchPost error", error.message)
+            console.log("fetchPost error", error.message);
         }
         setLoading(false);
     };

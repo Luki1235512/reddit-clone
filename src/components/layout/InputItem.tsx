@@ -1,3 +1,4 @@
+import React from "react";
 import { Input } from "@chakra-ui/react";
 
 type InputItemProps = {
@@ -47,7 +48,7 @@ const InputItem: React.FC<InputItemProps> = ({
             type={type}
             borderRadius={4}
         />
-    )
+    );
 };
 
 export default InputItem;

@@ -13,7 +13,7 @@ type CommunitiesProps = {
     menuOpen: boolean;
 };
 
-const Communities: React.FC<CommunitiesProps> = (menuOpen) => {
+const Communities: React.FC<CommunitiesProps> = ({menuOpen}) => {
     const [user] = useAuthState(auth);
     const [open, setOpen] = useState(false);
     const mySnippets = useRecoilValue(communityState).mySnippets;
