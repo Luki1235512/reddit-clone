@@ -4,7 +4,7 @@ import { theme } from "../chakra/theme";
 import Layout from "@/src/components/layout";
 import { RecoilRoot } from "recoil";
 import "../firebase/clientApp";
-import "../styles/global";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
